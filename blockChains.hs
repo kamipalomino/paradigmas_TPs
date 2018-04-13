@@ -21,6 +21,10 @@ ejecutarTest = hspec $ do
     it "Cerrar la cuenta: 0." $ billetera (cierraCuenta usuarioCon10Monedas) `shouldBe` 0
     it "Queda igual: 10." $ (billetera.quedaIgual) usuarioCon10Monedas `shouldBe` 10
     it "Depositar 1000, y luego tener un upgrade: 1020." $ (billetera.upgrade.deposita 1000) usuarioCon10Monedas `shouldBe` 1020
+    it "¿Cuál es la billetera de Pepe? Debería ser 10 monedas." $ billetera pepe `shouldBe` 10
+    it "¿Cuál es la billetera de Pepe, luego de un cierre de su cuenta? Debería ser 0." $ (billetera.cierraCuenta) pepe `shouldBe` 0
+    it "¿Cómo quedaría la billetera de Pepe si le depositan 15 monedas, extrae 2, y tiene un Upgrade? Debería quedar en 27.6." $ (billetera.upgrade.extraccion 2 .deposita 15) pepe `shouldBe` 27.6
+
     it "Toco y me voy, deberia quedar con 0." $ (billetera.tocoMeVoy) usuarioCon10Monedas `shouldBe` 0
     it "ahorrante errante, deberia quedar con 34." $ (billetera.ahorranteErrante) usuarioCon10Monedas `shouldBe` 34
 
@@ -33,6 +37,10 @@ ejecutarTest = hspec $ do
     it "lucho cierra la cuenta aplicada a pepe, deberia quedar pepe sin cambios" $ luchoCierraLaCuenta pepe pepe `shouldBe` pepe
     it "pepe le da 7 unidades a Lucho, deberia quedar lucho con 9 monedas" $ pepeLeDa7UnidadesALucho lucho lucho `shouldBe` nuevaBilletera 9 lucho
     it "pepe le da 7 unidades a Lucho y despues pepe deposita 5 monedas, deberia quedar con 9 monedas" $ (pepeLeDa7UnidadesALucho pepe.pepeDeposita5Monedas pepe) pepe `shouldBe` nuevaBilletera 8 pepe
+
+  describe "funciones sobre bloques" $ do
+
+    it "pepe despues de pasar por las transacciones del bloque 1, deberia quedar con 18 monedas" $ bloque1 pepe `shouldBe` nuevaBilletera 18 pepe
 
 -----------TIPOS DE DATOS-----------------
 
@@ -89,7 +97,6 @@ luchoTocaYSeVa unUsuario | compararUsuarios unUsuario lucho = tocoMeVoy
 luchoEsUnAhorranteErrante :: Usuario -> Transaccion
 luchoEsUnAhorranteErrante unUsuario | compararUsuarios unUsuario lucho = ahorranteErrante 
                                     | otherwise = quedaIgual  
-
 
 
 -----------------------PAGOS----------------------

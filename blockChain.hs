@@ -7,6 +7,10 @@ import Test.Hspec
 
 ------------TEST---------------------------------
 
+-- EN LOS TEST SE ESTA COMPARANDO USUARIOS CON UN NUMERO ( AL MARGEN DE QUE EL ENUNCIADO PEDIA DEVOLVER BILLETERAS Y DEVUELVEN USUARIOS ) Y NO SE PUEDE COMPARAR DOS TIPOS DIFERENTES 
+-- TAMBIEN HAY MUCHOS PARENTESIS DE MAS, RELEER O REPASAR LA PRESEDENCIA DE LAS FUNCIONES EN HASKELL
+-- Y ERRORES COMO ESTE "(upgrade.(extracion 2).(deposita 15 pepe)) `shouldBe` 27,6" DONDE HAY CLAROS ERRORES DE COMPOSICION 
+
 usuarioCon10Monedas = Usuario "Pepe" 10 10 
   
 
@@ -39,7 +43,9 @@ ejecutarTest = hspec $ do
     it "pepe le da 7 unidades a Lucho, deberia quedar lucho con 9 monedas" $ pepeLeDa7UnidadesALucho lucho lucho `shouldBe` nuevaBilletera 9 lucho
     it "pepe le da 7 unidades a Lucho y despues pepe deposita 5 monedas, deberia quedar con 9 monedas" $ (pepeLeDa7UnidadesALucho pepe.pepeDeposita5Monedas pepe) pepe `shouldBe` nuevaBilletera 8 pepe
 
------------TIPOS DE DATOS-----------------
+-----------TIPOS DE DATOS----------------- 
+
+-- NO SE ENTIENDE QUE FUNCION CUMPLE EL TYPE Transaccion SI ES IGUAL AL Evento Y DE TODAS MANERAS NO SE USA "Evento" EN EL CODIGO Y DEBERIA USARSE 
 
 type Evento = Usuario -> Usuario
 type Transaccion = Evento
@@ -50,34 +56,44 @@ type Nivel = Int
 
 data Usuario = Usuario {
   nombre :: Nombre,
-  billetera :: Monedas,
-  nivel :: Nivel
+  billetera :: Monedas,                         
 } deriving (Show,Eq) 
 
 --------------USUARIOS-------------------
 
-pepe = Usuario "Jose" 10 0
-lucho = Usuario "luciano" 2 0
+pepe = Usuario "Jose" 10 
+lucho = Usuario "luciano" 2 
 
 -----------EVENTOS-------------------------
-quedaIgual usuario = usuario
+-- ACA NUEVAMENTE HAY PARENTESIS DE MAS Y LA FUNCION subirNivel ES TOTALMENTE INNECESARIA  
+-- TIENEN QUE DELEGAR MAS EN LA FUNCION extraccion Y NO!! USEN GUARDA CUANDO DELEGUEN LA FUNCION (VIMOS UN EJEMPLO PARECIDO EN LAS PRIMERAS CLASES )
+
+quedaIgual usuario = usuario -- USAR LA FUNCION id
 nuevaBilletera unMonto unUsuario = unUsuario {billetera = unMonto}
 cierraCuenta usuario = nuevaBilletera 0 usuario
-subeNivel usuario = usuario {nivel = nivel usuario + 1 , billetera = (billetera usuario) * 1.2}
 deposita unMonto usuario = nuevaBilletera ((billetera usuario) +  unMonto) usuario
 tocoMeVoy usuario = (cierraCuenta.upgrade.deposita 15) usuario
 ahorranteErrante usuario = (deposita 10 .upgrade .deposita 8 .extraccion 1 .deposita 2 .deposita 1) usuario
 
-
 extraccion unMonto usuario
-  | (billetera usuario) - unMonto < 0 = nuevaBilletera 0 usuario
+  | (billetera usuario) - unMonto < 0 = cierraCuenta usuario
   | otherwise = nuevaBilletera ((billetera usuario) - unMonto) usuario
 
 upgrade usuario
-  | (billetera.subeNivel) usuario - billetera usuario < 10 = subeNivel usuario
-  | otherwise = nuevaBilletera (billetera usuario + 10) usuario
+  | (billetera usuario) * 1.2 >= 10 = nuevaBilletera 10 usuario
+  | otherwise = (billetera usuario * 1.2)
 
 ------------------TRANSACCIONES------------------
+
+-- EL ENUNCIADO PEDIA QUE EL CODIGO NO SE REPITA Y SEA FACILMENTE ESCALABLE, Y TIENEN MUCHO CODIGO REPETIDO
+-- CREEN UNA FUNCION PARA CREAR LAS TRANSACCIONES DE FORMA GENERICA Y LO MISMO CON LOS PAGOS 
+-- A MANERA DE AYUDA DEBERIAN PASARLE EL Evento Y LOS Usuarios Y DEVOLVERIAN UN Evento
+
+aplicarFuncion usuarioAAplicar usuarioAVerificar evento 
+| nombre usuarioAAplicar == nombre usuarioAVerificar = evento
+| otherwise = quedaIgual
+
+--todo lo de abajo volaria porque podria aplicar la funcion de arriba , resolveria el error que marco el profe arriba
 
 luchoCierraLaCuenta :: Usuario -> Transaccion
 luchoCierraLaCuenta unUsuario | compararUsuarios unUsuario lucho = cierraCuenta 
@@ -107,6 +123,8 @@ pepeLeDa7UnidadesALucho unUsuario | compararUsuarios unUsuario pepe = extraccion
 
 -----------------------BLOQUES----------------------------------
 
+-- LAS LISTAS NO TIENEN ESE FORMATO 
+
 bloque1 unUsuario =  (luchoCierraLaCuenta unUsuario
                       .pepeDeposita5Monedas unUsuario
                       .pepeDeposita5Monedas unUsuario
@@ -119,6 +137,8 @@ bloque1 unUsuario =  (luchoCierraLaCuenta unUsuario
 -------------FUNCIONES AUXILIARES-----------------
 
 compararUsuarios usuario1 usuario2 = nombre usuario1 == nombre usuario2
+getBilleteraBilletera usuario = billetera usuario
+
 
 
 

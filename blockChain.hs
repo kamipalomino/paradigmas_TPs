@@ -140,15 +140,15 @@ usuarios = [pepe,lucho]
 -- (u:us) lista de usuarios
 -- (b:bs) lista de bloques --blockchain
 
-aplicarTransaccionaBloque = map usuarioLuegoDeTransaccion bloque1
+--aplicarTransaccionaBloque = map usuarioLuegoDeTransaccion bloque1
 
---componerBloque [] = id
---componerBloque (f: fs) = (.) (usuarioLuegoDeTransaccion f) (componerBloque fs)
-componerBloque (f) = foldr ((.)) id (f)
+componerBloque [] = id
+componerBloque (f: fs) = (.) (usuarioLuegoDeTransaccion f) (componerBloque fs)
+--componerBloque (f) = foldr ((.)) id (f)
 
---aplicarBloque (f:fs) unUsuario =  componerBloque (f:fs) unUsuario
+aplicarBloque (f:fs) unUsuario =  componerBloque (f:fs) unUsuario
 
---aplicarBloqueAMuchos (f:fs) = map(componerBloque (f:fs))
+aplicarBloqueAMuchos (f:fs) = map(componerBloque (f:fs))
 
 --lleganANCreditos (f:fs) unMonto = filter (saldoAlMenosNMonedas unMonto).aplicarBloqueAMuchos bloque1
 -- compararUsuarios (f:fs) (u:us) = como itero la lista que me devuelve  aplicarBloqueAMuchos (f:fs) (u:us) ?????  igual esta funcion no haria falta

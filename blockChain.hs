@@ -45,7 +45,7 @@ ejecutarTest = hspec $ do
     it "Impactar la transacción 5 a Lucho. Debería producir que Lucho tenga 9 monedas en su billetera."$ (billetera.usuarioLuegoDeTransaccion pepeLeDa7UnidadesALucho) lucho `shouldBe` 9
     it "Impactar la transacción 5 y luego la 2 a Pepe. Eso hace que tenga 8 en su billetera."$ (billetera.usuarioLuegoDeTransaccion pepeDeposita5Monedas.usuarioLuegoDeTransaccion pepeLeDa7UnidadesALucho) pepe `shouldBe` 8
 
-  describe "Pruebas sobre Bloques" $ do
+  --describe "Pruebas sobre Bloques" $ do
 
 --    it "Aplicar bloque1 a pepe. Debería quedar con su mismo nombre, pero con una billetera de 18." $ (billetera.aplicarBloque bloque1) pepe `shouldBe` 18
     -- it "Probar que para el bloque 1, y los usuarios Pepe y Lucho, el único que quedaría con un saldo mayor a 10, es Pepe." $ lleganANCreditos bloque1 10 usuarios `shouldBe` [pepe]

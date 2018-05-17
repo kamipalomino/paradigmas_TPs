@@ -77,8 +77,10 @@ lucho = Usuario "luciano" 2
 nuevaBilletera unMonto unUsuario = unUsuario {billetera = unMonto}
 
 quedaIgual::Evento
-cierraCuenta::Evento
+cierraCuenta:: Evento
+upgrade :: Evento
 deposita::Monedas -> Evento
+extraccion::Monedas -> Evento
 tocoMeVoy::Evento
 
 quedaIgual = billetera   -- USAR LA FUNCION id TODO preguntar id
@@ -86,9 +88,9 @@ cierraCuenta  = billetera.nuevaBilletera 0
 deposita unMonto = ((+) unMonto .billetera)
 
 tocoMeVoy unUsuario = (cierraCuenta.nuevaBilletera (upgrade unUsuario).nuevaBilletera (deposita 15 unUsuario))  unUsuario --TODO seguro esta mal esto
---ahorranteErrante unUsuario = foldr (unUsuario) id [deposita 10 .upgrade .deposita 8 .extraccion 1 .deposita 2 .deposita 1]
+--ahorranteErrante unUsuario =  (unUsuario) id [deposita 10 .upgrade .deposita 8 .extraccion 1 .deposita 2 .deposita 1]
 
-extraccion unMonto unUsuario =  max 0 (billetera unUsuario) - unMonto
+extraccion unMonto  =  (max 0. (+) (-unMonto). billetera)
 
 minCantidadMonedasUpgrade unUsuario = (billetera unUsuario + (min (billetera unUsuario * 1.2 - billetera unUsuario) 10))
 upgrade unUsuario = (minCantidadMonedasUpgrade unUsuario) + billetera unUsuario
@@ -115,7 +117,7 @@ luchoTocaYSeVa  =  generarEventoAUnUsuario tocoMeVoy lucho
 
 -----------------------PAGOS----------------------
 
-usuarioPagaAOtroUsuario :: Usuario -> Usuario -> Monedas -> Transaccion
+usuarioPagaAOtroUsuario :: Usuario -> Usuario -> Monedas -> Usuario -> Evento
 usuarioPagaAOtroUsuario usuarioQuePaga usuarioQueCobra cantidad unUsuario
   | compararUsuariosPorPorNombre usuarioQuePaga unUsuario   = extraccion cantidad
   | compararUsuariosPorPorNombre usuarioQueCobra unUsuario = deposita cantidad

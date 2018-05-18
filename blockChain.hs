@@ -31,25 +31,26 @@ ejecutarTest = hspec $ do
     it "Cual es la billetera de Pepe?, deberia ser 10 monedas" $ (quedaIgual.billetera) pepe `shouldBe` 10
     it "Cual es la billetera de Pepe?, luego de un cierre de cuenta deberia ser 0 monedas" $ (cierraCuenta. billetera) pepe `shouldBe` 0
     it "Como queda la biletera de pepe si le epositan 15, se extrae 2 y tiene un upgrade, deberia ser 27,6" $  (upgrade.extraccion 2.deposita 15.billetera) pepe `shouldBe` 27.6
-{-}
+
   describe "Pruebas sobre las transiciones" $ do
 
     it "Lucho toca y se va con billetera de 10 monedas, deberia quedar 0 monedas." $ luchoTocaYSeVa lucho billeteraDeUsuarioCon10Monedas `shouldBe` 0
     --it "Lucho es ahorrante errante con billetera de 10 monedas, deberia quedar 34 monedas." $ luchoEsUnAhorranteErrante lucho billeteraDeUsuarioCon10Monedas `shouldBe` 34
     it "pepe le paga 7 monedas a lucho, deberia quedarle 3 monedas" $ pepeLeDa7UnidadesALucho pepe billeteraDeUsuarioCon10Monedas `shouldBe` 3
     it "lucho recibe 7 monedas de pepe, deberia quedarle 17 monedas" $ pepeLeDa7UnidadesALucho lucho billeteraDeUsuarioCon10Monedas `shouldBe` 17
-    it "lucho cierra la cuenta aplicada a pepe, deberia quedar pepe sin cambios" $ luchoCierraLaCuenta pepe pepe `shouldBe` billetera pepe -- TODO Preguntar
-    it "pepe le da 7 unidades a Lucho, deberia quedar lucho con 9 monedas" $  pepeLeDa7UnidadesALucho lucho lucho `shouldBe` 9
-    --it "pepe le da 7 unidades a Lucho y despues pepe deposita 5 monedas, deberia quedar con 8 monedas" $   (pepeLeDa7UnidadesALucho pepe.pepeDeposita5Monedas pepe) pepe `shouldBe` 8
-    it "Impactar la transacción 1 a Pepe. Debería quedar igual que como está inicialmente."$ usuarioLuegoDeTransaccion luchoCierraLaCuenta pepe `shouldBe` 10
-    it "Impactar la transacción 5 a Lucho. Debería producir que Lucho tenga 9 monedas en su billetera."$ usuarioLuegoDeTransaccion pepeLeDa7UnidadesALucho lucho `shouldBe` 9
-    --it "Impactar la transacción 5 y luego la 2 a Pepe. Eso hace que tenga 8 en su billetera."$ (usuarioLuegoDeTransaccion pepeDeposita5Monedas.usuarioLuegoDeTransaccion pepeLeDa7UnidadesALucho) pepe `shouldBe` 8
+    it "lucho cierra la cuenta aplicada a pepe, deberia quedar pepe sin cambios" $ (luchoCierraLaCuenta pepe. billetera) pepe `shouldBe` billetera pepe -- TODO Preguntar
+    it "pepe le da 7 unidades a Lucho, deberia quedar lucho con 9 monedas" $  (pepeLeDa7UnidadesALucho lucho. billetera) lucho `shouldBe` 9
+    it "pepe le da 7 unidades a Lucho y despues pepe deposita 5 monedas, deberia quedar con 8 monedas" $   (pepeLeDa7UnidadesALucho pepe.pepeDeposita5Monedas pepe. billetera) pepe `shouldBe` 8
+    it "Impactar la transacción 1 a Pepe. Debería quedar igual que como está inicialmente."$ (luchoCierraLaCuenta pepe.billetera) pepe `shouldBe` 10
+    it "Impactar la transacción 5 a Lucho. Debería producir que Lucho tenga 9 monedas en su billetera."$ (pepeLeDa7UnidadesALucho lucho.billetera) lucho `shouldBe` 9
+    it "Impactar la transacción 5 y luego la 2 a Pepe. Eso hace que tenga 8 en su billetera."$ (pepeDeposita5Monedas pepe. pepeLeDa7UnidadesALucho pepe. billetera) pepe `shouldBe` 8
 
   --describe "Pruebas sobre Bloques" $ do
 
---    it "Aplicar bloque1 a pepe. Debería quedar con su mismo nombre, pero con una billetera de 18." $ (billetera.aplicarBloque bloque1) pepe `shouldBe` 18
-    -- it "Probar que para el bloque 1, y los usuarios Pepe y Lucho, el único que quedaría con un saldo mayor a 10, es Pepe." $ lleganANCreditos bloque1 10 usuarios `shouldBe` [pepe]
--}
+    --it "Aplicar bloque1 a pepe. Debería quedar con su mismo nombre, pero con una billetera de 18." $ (billetera.aplicarBloque bloque1) pepe `shouldBe` 18
+    --it "Para el bloque 1, y los usuarios Pepe y Lucho, el único que quedaría con un saldo mayor a 10, es Pepe." $ usuarioQueLleganANCreditos bloque1 10 usuarios `shouldBe` [pepe]
+    --it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas adinerado, quedaria Pepe." $  elUsuarioMasRickyFord bloque1 usuarios `shouldBe` pepe
+    --it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas pobre, quedaria Pepe." $  elUsuarioMasPobre bloque1 usuarios `shouldBe` lucho
 -----------TIPOS DE DATOS-----------------
 
 -- NO SE ENTIENDE QUE FUNCION CUMPLE EL TYPE Transaccion SI ES IGUAL AL Evento Y DE TODAS MANERAS NO SE USA "Evento" EN EL CODIGO Y DEBERIA USARSE
@@ -71,6 +72,8 @@ data Usuario = Usuario {
 pepe = Usuario "Jose" 10
 lucho = Usuario "luciano" 2
 
+
+
 -----------EVENTOS-------------------------
 -- TIENEN QUE DELEGAR MAS EN LA FUNCION extraccion Y NO!! USEN GUARDA CUANDO DELEGUEN LA FUNCION (VIMOS UN EJEMPLO PARECIDO EN LAS PRIMERAS CLASES )
 
@@ -81,7 +84,8 @@ cierraCuenta:: Evento
 upgrade :: Evento
 deposita::Monedas -> Evento
 extraccion::Monedas -> Evento
---tocoMeVoy::Evento
+tocoMeVoy::Evento
+ahorranteErrante ::Evento
 
 quedaIgual cantBilletera = id cantBilletera  -- USAR LA FUNCION id TODO preguntar id
 cierraCuenta _ = 0
@@ -98,22 +102,22 @@ upgrade cantBilletera = (minCantidadMonedasUpgrade cantBilletera) + cantBilleter
 
 
 ------------------TRANSACCIONES------------------
-generarEventoAUnUsuario::Evento->Usuario->Usuario->Evento
-generarEventoAUnUsuario evento usuarioAAplicar usuarioAVerificar
+generarTransaccionAUnUsuario::Evento->Usuario->Usuario->Evento
+generarTransaccionAUnUsuario evento usuarioAAplicar usuarioAVerificar
   | compararUsuariosPorPorNombre usuarioAAplicar usuarioAVerificar = evento
   | otherwise = quedaIgual
 
 luchoCierraLaCuenta :: Transaccion
-luchoCierraLaCuenta = generarEventoAUnUsuario cierraCuenta lucho
+luchoCierraLaCuenta = generarTransaccionAUnUsuario cierraCuenta lucho
 
 pepeDeposita5Monedas :: Transaccion
-pepeDeposita5Monedas  =  generarEventoAUnUsuario (deposita 5) pepe
+pepeDeposita5Monedas  =  generarTransaccionAUnUsuario (deposita 5) pepe
 
 luchoTocaYSeVa :: Transaccion
-luchoTocaYSeVa  =  generarEventoAUnUsuario tocoMeVoy lucho
+luchoTocaYSeVa  =  generarTransaccionAUnUsuario tocoMeVoy lucho
 
---luchoEsUnAhorranteErrante :: Transaccion
---luchoEsUnAhorranteErrante usuarioAVerificar = generarEventoAUnUsuario ahorranteErrante lucho
+luchoEsUnAhorranteErrante :: Transaccion
+luchoEsUnAhorranteErrante = generarTransaccionAUnUsuario ahorranteErrante lucho
 
 
 -----------------------PAGOS----------------------
@@ -139,26 +143,34 @@ type BlockChain = [Bloque]
 
 
 usuarioLuegoDeTransaccion unaTransicion unUsuario = unaTransicion unUsuario unUsuario
---bloque1 = [luchoCierraLaCuenta,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,luchoTocaYSeVa,luchoEsUnAhorranteErrante,pepeLeDa7UnidadesALucho,luchoTocaYSeVa];
+bloque1 = [luchoCierraLaCuenta,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,luchoTocaYSeVa,luchoEsUnAhorranteErrante,pepeLeDa7UnidadesALucho,luchoTocaYSeVa];
 usuarios = [pepe,lucho]
---bloque2 = [pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas];
---blockchain1 = [bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1,bloque2,bloque1]
+bloque2 = (take 5. repeat) pepeDeposita5Monedas
+blockchain1 = bloque2:((take 10. repeat) bloque1)
 
 -- (f: fs) lista de funciones -- bloque
 -- (u:us) lista de usuarios
 -- (b:bs) lista de bloques --blockchain
 
---aplicarTransaccionaBloque = map usuarioLuegoDeTransaccion bloque1
+aplicarTransaccionAUsuario transaccion unUsuario = nuevaBilletera (transaccion unUsuario (billetera unUsuario)) unUsuario
 
-componerBloque [] = id
-componerBloque (f: fs) = (.) (usuarioLuegoDeTransaccion f) (componerBloque fs)
---componerBloque (f) = foldr ((.)) id (f)
+aplicarBloque bloque unUsuario = foldr aplicarTransaccionAUsuario unUsuario bloque
+aplicarBloqueAMuchos bloque lista = map (aplicarBloque bloque1) lista
 
-aplicarBloque (f:fs) unUsuario =  componerBloque (f:fs) unUsuario
+usuarioCompararSaldo criterio unUsuario otroUsuario
+  | (criterio) (billetera unUsuario) (billetera otroUsuario) == billetera unUsuario = unUsuario
+  | otherwise = otroUsuario
 
-aplicarBloqueAMuchos (f:fs) = map(componerBloque (f:fs))
+mejorSegun criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
 
---lleganANCreditos (f:fs) unMonto = filter (saldoAlMenosNMonedas unMonto).aplicarBloqueAMuchos bloque1
+
+elUsuarioMasRickyFord bloque lista = mejorSegun max (aplicarBloqueAMuchos bloque lista)
+elUsuarioMasPobre bloque lista = mejorSegun min (aplicarBloqueAMuchos bloque lista)
+
+
+--rico bloque lista = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque1)
+lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
+
 -- compararUsuariosPorPorNombre (f:fs) (u:us) = como itero la lista que me devuelve  aplicarBloqueAMuchos (f:fs) (u:us) ?????  igual esta funcion no haria falta
 -- elMasPobre (f:fs) (u:us) = foldl min map (billetera) aplicarBloqueAMuchos (f:fs) (u:us) asi estara bien??
 -- esRickyFort (f:fs) (u:us) = foldl max map (billetera) aplicarBloqueAMuchos (f:fs) (u:us) asi estara bien??

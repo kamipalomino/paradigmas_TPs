@@ -161,19 +161,15 @@ usuarioCompararSaldo criterio unUsuario otroUsuario
   | (criterio) (billetera unUsuario) (billetera otroUsuario) == billetera unUsuario = unUsuario
   | otherwise = otroUsuario
 
-mejorSegun criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
+mejorSegunSaldo criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
 
+encontrarMejorUsuarioSegun criterio bloque lista = find (compararUsuariosPorPorNombre (mejorSegunSaldo criterio (aplicarBloqueAMuchos bloque lista))) lista
 
-elUsuarioMasRickyFord bloque lista = mejorSegun max (aplicarBloqueAMuchos bloque lista)
-elUsuarioMasPobre bloque lista = mejorSegun min (aplicarBloqueAMuchos bloque lista)
+elUsuarioMasRickyFord bloque  = encontrarMejorUsuarioSegun max bloque
+elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
 
-
---rico bloque lista = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque1)
 lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
 
--- compararUsuariosPorPorNombre (f:fs) (u:us) = como itero la lista que me devuelve  aplicarBloqueAMuchos (f:fs) (u:us) ?????  igual esta funcion no haria falta
--- elMasPobre (f:fs) (u:us) = foldl min map (billetera) aplicarBloqueAMuchos (f:fs) (u:us) asi estara bien??
--- esRickyFort (f:fs) (u:us) = foldl max map (billetera) aplicarBloqueAMuchos (f:fs) (u:us) asi estara bien??
 
 -- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas
 --componerBlockChain (b:bs) =

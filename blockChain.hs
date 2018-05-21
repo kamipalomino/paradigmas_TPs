@@ -179,6 +179,7 @@ elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
 lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
 
 blockchainInfinita unaBlockchain bloque = (unaBlockchain (++) bloque)(++)bloque 
+aplicarBlockChain unaBlockchain unUsuario = foldr aplicarBloque unUsuario unaBlockchain
 
 -- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas
 --componerBlockChain (b:bs) =

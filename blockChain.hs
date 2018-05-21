@@ -33,7 +33,6 @@ ejecutarTest = hspec $ do
     it "Como queda la biletera de pepe si le epositan 15, se extrae 2 y tiene un upgrade, deberia ser 27,6" $  (upgrade.extraccion 2.deposita 15.billetera) pepe `shouldBe` 27.6
 
   describe "Pruebas sobre las transiciones" $ do
-
     it "Lucho toca y se va con billetera de 10 monedas, deberia quedar 0 monedas." $ luchoTocaYSeVa lucho billeteraDeUsuarioCon10Monedas `shouldBe` 0
     --it "Lucho es ahorrante errante con billetera de 10 monedas, deberia quedar 34 monedas." $ luchoEsUnAhorranteErrante lucho billeteraDeUsuarioCon10Monedas `shouldBe` 34
     it "pepe le paga 7 monedas a lucho, deberia quedarle 3 monedas" $ pepeLeDa7UnidadesALucho pepe billeteraDeUsuarioCon10Monedas `shouldBe` 3
@@ -41,17 +40,16 @@ ejecutarTest = hspec $ do
     it "lucho cierra la cuenta aplicada a pepe, deberia quedar pepe sin cambios" $ (luchoCierraLaCuenta pepe. billetera) pepe `shouldBe` billetera pepe -- TODO Preguntar
     it "pepe le da 7 unidades a Lucho, deberia quedar lucho con 9 monedas" $  (pepeLeDa7UnidadesALucho lucho. billetera) lucho `shouldBe` 9
     it "pepe le da 7 unidades a Lucho y despues pepe deposita 5 monedas, deberia quedar con 8 monedas" $   (pepeLeDa7UnidadesALucho pepe.pepeDeposita5Monedas pepe. billetera) pepe `shouldBe` 8
-    it "Impactar la transacción 1 a Pepe. Debería quedar igual que como está inicialmente."$ (luchoCierraLaCuenta pepe.billetera) pepe `shouldBe` 10
-    it "Impactar la transacción 5 a Lucho. Debería producir que Lucho tenga 9 monedas en su billetera."$ (pepeLeDa7UnidadesALucho lucho.billetera) lucho `shouldBe` 9
-    it "Impactar la transacción 5 y luego la 2 a Pepe. Eso hace que tenga 8 en su billetera."$ (pepeDeposita5Monedas pepe. pepeLeDa7UnidadesALucho pepe. billetera) pepe `shouldBe` 8
-
-  --describe "Pruebas sobre Bloques" $ do
-
-    --it "Aplicar bloque1 a pepe. Debería quedar con su mismo nombre, pero con una billetera de 18." $ (billetera.aplicarBloque bloque1) pepe `shouldBe` 18
-    --it "Para el bloque 1, y los usuarios Pepe y Lucho, el único que quedaría con un saldo mayor a 10, es Pepe." $ usuarioQueLleganANCreditos bloque1 10 usuarios `shouldBe` [pepe]
-    --it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas adinerado, quedaria Pepe." $  elUsuarioMasRickyFord bloque1 usuarios `shouldBe` pepe
-    --it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas pobre, quedaria Pepe." $  elUsuarioMasPobre bloque1 usuarios `shouldBe` lucho
------------TIPOS DE DATOS-----------------
+    it "Impactar la transacción 1 a Pepe. Debería quedar igual que como está inicialmente." $ (luchoCierraLaCuenta pepe.billetera) pepe `shouldBe` 10
+    it "Impactar la transacción 5 a Lucho. Debería producir que Lucho tenga 9 monedas en su billetera." $ (pepeLeDa7UnidadesALucho lucho.billetera) lucho `shouldBe` 9
+    it "Impactar la transacción 5 y luego la 2 a Pepe. Eso hace que tenga 8 en su billetera." $ (pepeDeposita5Monedas pepe. pepeLeDa7UnidadesALucho pepe. billetera) pepe `shouldBe` 8
+-- --it "Impactar la transaccion 2 a Pepe, deberia quedar con 15" $ pepeDeposita5Monedas pepe `shouldBe` 15
+  -- describe "Pruebas sobre Bloques" $ do
+    -- it "Aplicar bloque1 a pepe. Debería quedar con su mismo nombre, pero con una billetera de 18." $ (billetera.aplicarBloque bloque1) pepe `shouldBe` 18
+    -- it "Para el bloque 1, y los usuarios Pepe y Lucho, el único que quedaría con un saldo mayor a 10, es Pepe." $ usuarioQueLleganANCreditos bloque1 10 usuarios `shouldBe` [pepe]
+    -- it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas adinerado, quedaria Pepe." $  elUsuarioMasRickyFord bloque1 usuarios `shouldBe` pepe
+    -- it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas pobre, quedaria Pepe." $  elUsuarioMasPobre bloque1 usuarios `shouldBe` lucho
+--  -----------TIPOS DE DATOS-----------------
 
 -- NO SE ENTIENDE QUE FUNCION CUMPLE EL TYPE Transaccion SI ES IGUAL AL Evento Y DE TODAS MANERAS NO SE USA "Evento" EN EL CODIGO Y DEBERIA USARSE
 
@@ -82,14 +80,14 @@ nuevaBilletera unMonto unUsuario = unUsuario {billetera = unMonto}
 quedaIgual::Evento
 cierraCuenta:: Evento
 upgrade :: Evento
-deposita::Monedas -> Evento
-extraccion::Monedas -> Evento
-tocoMeVoy::Evento
+deposita:: Monedas -> Evento -- es de tipo evento 
+extraccion:: Monedas -> Evento -- lo mismo de   
+tocoMeVoy:: Evento 
 ahorranteErrante ::Evento
 
 quedaIgual cantBilletera = id cantBilletera  -- USAR LA FUNCION id TODO preguntar id
 cierraCuenta _ = 0
-deposita unMonto = (+) unMonto
+deposita unMonto  = (+) unMonto 
 
 tocoMeVoy = cierraCuenta.upgrade.deposita 15 --TODO seguro esta mal esto
 ahorranteErrante cantBilletera =  (deposita 10 .upgrade .deposita 8 .extraccion 1 .deposita 2 .deposita 1) cantBilletera
@@ -136,18 +134,21 @@ pepeLeDa7UnidadesALucho = usuarioPagaAOtroUsuario pepe lucho 7     --TODO pregun
 compararUsuariosPorPorNombre usuario1 usuario2 = nombre usuario1 == nombre usuario2
 saldoAlMenosNMonedas n  = (<)n. billetera
 
+deAlgoTomarN :: a -> Int ->[a]
+deAlgoTomarN algo numero = (take numero. repeat) algo
 -----------------------BLOQUES/BLOCKCHAINS----------------------------------
 
 type Bloque = [Transaccion]
 type BlockChain = [Bloque]
+listadeusuarios :: [Usuario]
 
 
 usuarioLuegoDeTransaccion unaTransicion unUsuario = unaTransicion unUsuario unUsuario
 bloque1 = [luchoCierraLaCuenta,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,luchoTocaYSeVa,luchoEsUnAhorranteErrante,pepeLeDa7UnidadesALucho,luchoTocaYSeVa];
-usuarios = [pepe,lucho]
-bloque2 = (take 5. repeat) pepeDeposita5Monedas
-blockchain1 = bloque2:((take 10. repeat) bloque1)
+listadeusuarios = [pepe,lucho]
 
+bloque2 = deAlgoTomarN pepeDeposita5Monedas 5
+blockchain = bloque2: (deAlgoTomarN bloque1 10)
 -- (f: fs) lista de funciones -- bloque
 -- (u:us) lista de usuarios
 -- (b:bs) lista de bloques --blockchain
@@ -160,8 +161,10 @@ aplicarBloqueAMuchos bloque lista = map (aplicarBloque bloque1) lista
 usuarioCompararSaldo criterio unUsuario otroUsuario
   | (criterio) (billetera unUsuario) (billetera otroUsuario) == billetera unUsuario = unUsuario
   | otherwise = otroUsuario
-
+--mejorSegun criterio  (primerUsuario:restoUsuarios)= 
 mejorSegunSaldo criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
+
+mejorSegunBilletera lista= map find lista
 
 encontrarMejorUsuarioSegun criterio bloque lista = find (compararUsuariosPorPorNombre (mejorSegunSaldo criterio (aplicarBloqueAMuchos bloque lista))) lista
 
@@ -170,6 +173,10 @@ elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
 
 lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
 
+--blockchainInfinita :: Bloque -> BlockChain
+--blockchainInfinita (unbloque:otoBloque) = (unbloque, unbloque) otoBloque
+blockchainInfinita bloque = blockchainInfinita bloque .blockchainInfinita bloque
+ 
 
 -- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas
 --componerBlockChain (b:bs) =

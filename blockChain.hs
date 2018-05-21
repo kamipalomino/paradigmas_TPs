@@ -145,9 +145,11 @@ listadeusuarios :: [Usuario]
 usuarioLuegoDeTransaccion unaTransicion unUsuario = unaTransicion unUsuario unUsuario
 bloque1 = [luchoCierraLaCuenta,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,luchoTocaYSeVa,luchoEsUnAhorranteErrante,pepeLeDa7UnidadesALucho,luchoTocaYSeVa];
 listadeusuarios = [pepe,lucho]
-
 bloque2 = deAlgoTomarN pepeDeposita5Monedas 5
-blockchain = bloque2: (deAlgoTomarN bloque1 10)
+--blockchain = bloque2: (deAlgoTomarN bloque1 10)
+
+blockchain = [bloque2] ++ (deAlgoTomarN bloque1 10)
+
 -- (f: fs) lista de funciones -- bloque
 -- (u:us) lista de usuarios
 -- (b:bs) lista de bloques --blockchain
@@ -160,7 +162,7 @@ aplicarBloqueAMuchos bloque lista = map (aplicarBloque bloque1) lista
 usuarioCompararSaldo criterio unUsuario otroUsuario
   | (criterio) (billetera unUsuario) (billetera otroUsuario) == billetera unUsuario = unUsuario
   | otherwise = otroUsuario
---mejorSegun criterio  (primerUsuario:restoUsuarios)= 
+
 mejorSegunSaldo criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
 
 mejorSegunBilletera lista= map find lista
@@ -172,9 +174,9 @@ elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
 
 lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
 
---blockchainInfinita :: Bloque -> BlockChain
---blockchainInfinita (unbloque:otoBloque) = (unbloque, unbloque) otoBloque
-blockchainInfinita bloque = blockchainInfinita bloque .blockchainInfinita bloque
+
+blockchainInfinita [] = 0
+--blockchainInfinita (primerBloque:restoBloque) = . blockchainInfinita restoBloque
  
 
 -- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas

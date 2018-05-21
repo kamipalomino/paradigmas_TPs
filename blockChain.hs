@@ -16,7 +16,6 @@ billeteraDeUsuarioCon10Monedas = billetera (Usuario "pepe" 10)
 ejecutarTest = hspec $ do
 
   describe "Pruebas sobre los eventos" $ do
-
     it "Depositar 10 más. Debería quedar con 20 monedas." $ deposita 10 billeteraDeUsuarioCon10Monedas `shouldBe` 20
     it "Extraer 3: Debería quedar con 7" $ extraccion 3 billeteraDeUsuarioCon10Monedas `shouldBe` 7
     it "Extraer 15: Debería quedar con 0" $ extraccion 15 billeteraDeUsuarioCon10Monedas `shouldBe` 0
@@ -80,8 +79,8 @@ nuevaBilletera unMonto unUsuario = unUsuario {billetera = unMonto}
 quedaIgual::Evento
 cierraCuenta:: Evento
 upgrade :: Evento
-deposita:: Monedas -> Evento -- es de tipo evento 
-extraccion:: Monedas -> Evento -- lo mismo de   
+deposita:: Monedas -> Evento  
+extraccion:: Monedas -> Evento   
 tocoMeVoy:: Evento 
 ahorranteErrante ::Evento
 

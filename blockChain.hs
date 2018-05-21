@@ -165,7 +165,11 @@ usuarioCompararSaldo criterio unUsuario otroUsuario
 
 mejorSegunSaldo criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
 
-mejorSegunBilletera lista= map find lista
+
+mejorSegunBilletera [usuario] = usuario
+mejorSegunBilletera (primerUsuario:otroUsuario:restoUsuarios)
+    | (>)(billetera primerUsuario) (billetera otroUsuario) = mejorSegunBilletera (primerUsuario:restoUsuarios)
+	| otherwise = mejorSegunBilletera (otroUsuario:restoUsuarios)
 
 encontrarMejorUsuarioSegun criterio bloque lista = find (compararUsuariosPorPorNombre (mejorSegunSaldo criterio (aplicarBloqueAMuchos bloque lista))) lista
 
@@ -174,10 +178,7 @@ elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
 
 lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
 
-
-blockchainInfinita [] = 0
---blockchainInfinita (primerBloque:restoBloque) = . blockchainInfinita restoBloque
- 
+blockchainInfinita unaBlockchain bloque = (unaBlockchain (++) bloque)(++)bloque 
 
 -- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas
 --componerBlockChain (b:bs) =

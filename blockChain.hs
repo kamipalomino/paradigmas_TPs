@@ -135,8 +135,11 @@ saldoAlMenosNMonedas n  = (<)n. billetera
 
 deAlgoTomarN :: a -> Int ->[a]
 deAlgoTomarN algo numero = (take numero. repeat) algo
+deAlgoCortarN algo numero = drop numero algo
 
---aplicarTodo = foldr​ flip​ (.) id
+--aplicarTodo = foldr​ (.) id
+--aplicarTodo2 = foldl​ (flip​ (.)) id
+--afectarCon bloque unUsuario = ​foldl​ (​flip​ ($)) unUsuario bloque
 -----------------------BLOQUES/BLOCKCHAINS----------------------------------
 
 type Bloque = [Transaccion]
@@ -177,10 +180,22 @@ elUsuarioMasRickyFord bloque  = encontrarMejorUsuarioSegun max bloque
 elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
 
 lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBloque bloque)
+blockchainInfinita unbloque =  unbloque: (blockchainInfinita unbloque)
 
-blockchainInfinita unaBlockchain bloque = (unaBlockchain (++) bloque)(++)bloque 
+unaBlockchainInfinita (primerBloque:_) _ = []
+unaBlockchainInfinita (_:otroBloque) bloque = otroBloque: ((take 2 . blockchainInfinita) bloque)
+blockchain2 = unaBlockchainInfinita bloque1
+
+aplicarBlockChain :: BlockChain -> Usuario -> Usuario
+
 aplicarBlockChain unaBlockchain unUsuario = foldr aplicarBloque unUsuario unaBlockchain
 aplicarBlockChainAMuchos unaBlockchain lista = map (aplicarBlockChain unaBlockchain) lista
+aplicarBlockChainInfinita unaBlockchainInfinita unUsuario = foldr aplicarBlockChain unUsuario unaBlockchainInfinita
+
+--saldoDespuesDeN :: Int -> BlockChain -> Usuario -> Monedas
+saldoDespuesDeN numero unaBlockchain unUsuario= aplicarBlockChain (take numero unaBlockchain) unUsuario
+
+
 --peorBloque [] _ = 0
 --peorBloque _ unUsuario = unUsuario
 --peorBloque unaBlockchain unUsuario = foldl​ flip​ ($) unUsuario unaBlockchain

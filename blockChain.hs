@@ -49,10 +49,10 @@ ejecutarTest = hspec $ do
     -- it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas adinerado, quedaria Pepe." $  elUsuarioMasRickyFord bloque1 usuarios `shouldBe` pepe
     -- it "Para el bloque 1, y los usuarios Pepe y Lucho, quien es el mas pobre, quedaria Pepe." $  elUsuarioMasPobre bloque1 usuarios `shouldBe` lucho
 
- -- describe "Pruebas de BlockChain" $ do
-   -- it "Aplicar blockchain a pepe. Deberia quedar su billetera con 115 monedas" $ aplicarBlockChain blockchain pepe `shouldBe` billetera pepe 115
-    --it "transitar primeros 3 bloques. Pepe deberia quedar con 51 monedas" $ saldoDespuesDeN 3 blockchain pepe `shouldBe` billetera pepe 51
-    --it "Aplicar blockchain a listadeusuarios. La suma total de sus billeteras deberia ser 115 monedas" $ ((sum)billetera pepe billetera lucho .(aplicarBlockChainAMuchos blockchain listadeusuarios)) `shouldBe` 115
+  describe "Pruebas de BlockChain" $ do
+    it "Aplicar blockchain a pepe. Deberia quedar su billetera con 115 monedas" $ (billetera .aplicarBlockChain blockchain) pepe `shouldBe` 115
+    it "transitar primeros 3 bloques. Pepe deberia quedar con 51 monedas" $ (billetera .saldoDespuesDeN 3 blockchain) pepe `shouldBe` 51
+    --it "Aplicar blockchain a listadeusuarios. La suma total deberia ser 115 monedas" $ map sum (aplicarBlockChainAMuchos blockchain) listadeusuarios `shouldBe` 115.0
     -------------TIPOS DE DATOS-----------------
 
 -- NO SE ENTIENDE QUE FUNCION CUMPLE EL TYPE Transaccion SI ES IGUAL AL Evento Y DE TODAS MANERAS NO SE USA "Evento" EN EL CODIGO Y DEBERIA USARSE
@@ -201,12 +201,8 @@ saldoDespuesDeN numero unaBlockchain unUsuario= aplicarBlockChain (take numero u
 peorBloque (primerBloque:otroBloque) unUsuario = foldr (comparar min (billetera.aflip aplicarBloque unUsuario)) primerBloque otroBloque
 
 aflip funcion arg1 arg2 = funcion arg2 arg1 
--- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas
---componerBlockChain (b:bs) =
---aplicarBlockChain (b:bs) unUsuario = (aplicarBloque bs .aplicarBloque b) unUsuario  --aplico bloque cabeza y luego compongo con los de la cola
---aplicarBlockChainAMuchos (b:bs) (u:us) = map (aplicarBlockChain (b:bs)) (u:us)
--- ver como componer solo cierta cantidad de aplicarBloque en aplicarBlockChain para saber como esta el usuario luego de transitar N bloques
 
--- el blockchain infinito debe devolver un blockchain a partir de un tipo de bloque -- Bloque -> Usuario -> BlockChain
---Cada bloque deberá contener todas las transacciones del anterior, dos veces. a que mierda se refiere ???????'
---BlockChainInfinito (f: fs) unUsuario unMonto =
+--bloquesParaLlegarNSaldo :: Float -> BlockChain -> Usuario -> unUsuario ->
+bloquesParaLlegarNSaldo saldo (_:otroBloque) unUsuario
+  | saldo > billetera unUsuario = aplicarBlockChain (unaBlockchainInfinita otroBloque bloque1)  unUsuario
+  | otherwise = unUsuario

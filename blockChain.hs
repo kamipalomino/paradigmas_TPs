@@ -56,7 +56,7 @@ ejecutarTest = hspec $ do
     it "aplicar blockchain1 a pepe, deberia quedar con 115 monedas" $ (billetera.aplicarBlockChain blockchain1) pepe `shouldBe` 115
     it "aplicar primeros 3 bloques de la blockChain a pepe, deberia quedar 51 monedas" $ (billetera.aplicarPrimerosNBloquesAUsuario 3 blockchain1) pepe `shouldBe` 51
     it "aplicar blockChain a pepe y lucho, deben quedar con 115 y 0 monedas." $  foldr (+) 0 (map billetera (aplicarBlockChainAMuchos blockchain1 usuarios)) `shouldBe` 115
-    it "buscar cantidad necesaria para que pepe llegue a 10000 monedas, serian 11 bloques" $ (length.bloquesParaLLegarNMonedas 10000 blockchainInfinito) pepe `shouldBe` 11
+    it "buscar cantidad necesaria para que pepe llegue a 10000 monedas, serian 11 bloques" $ (cantBloquesParaLlegarNMonedas 10000 blockchainInfinito) pepe `shouldBe` 11
 
     -------------TIPOS DE DATOS-----------------
 
@@ -64,7 +64,7 @@ ejecutarTest = hspec $ do
 
 type Evento = Monedas -> Monedas
 type Transaccion = Usuario -> Evento
-type Pago = Usuario -> Usuario -> Monedas -> Usuario -> Evento
+type Pago = Usuario -> Usuario -> Monedas -> Transaccion
 type Monedas = Float
 type Nombre = String
 type Nivel = Int
@@ -108,7 +108,7 @@ upgrade cantBilletera = (minCantidadMonedasUpgrade cantBilletera) + cantBilleter
 minCantidadMonedasUpgrade cantBilletera = (min (cantBilletera * 1.2 - cantBilletera) 10)
 
 ------------------TRANSACCIONES------------------
-generarTransaccionAUnUsuario::Evento->Usuario->Usuario->Evento
+generarTransaccionAUnUsuario::Evento->Usuario->Transaccion
 generarTransaccionAUnUsuario evento usuarioAAplicar usuarioAVerificar
   | compararUsuariosPorPorNombre usuarioAAplicar usuarioAVerificar = evento
   | otherwise = quedaIgual
@@ -150,6 +150,7 @@ compararSegun criterio funcion unElemento otroElemento
   | otherwise = otroElemento
 
 ------------------------------BLOQUES/BLOCKCHAINS---------------------------------
+
 type Bloque = [Transaccion]
 type BlockChain = [Bloque]
 usuarios :: [Usuario]
@@ -160,7 +161,6 @@ bloque2 = deAlgoTomarN pepeDeposita5Monedas 5
 blockchain1 = bloque2 : (deAlgoTomarN bloque1 10)
 blockchainInfinito = generarBlockchainInfinito bloque1
 
-usuarioLuegoDeTransaccion unaTransicion unUsuario = unaTransicion unUsuario unUsuario
 
 aplicarTransaccionAUsuario :: Transaccion -> Usuario -> Usuario
 aplicarTransaccionAUsuario transaccion unUsuario = nuevaBilletera (transaccion unUsuario (billetera unUsuario)) unUsuario
@@ -177,7 +177,6 @@ usuarioCompararSaldo criterio unUsuario otroUsuario
 
 mejorSegunSaldo criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
 
-
 encontrarMejorUsuarioSegun criterio bloque lista =fromJust( find (compararUsuariosPorPorNombre (mejorSegunSaldo criterio (aplicarBloqueAMuchos bloque lista))) lista )
 elUsuarioMasRickyFord bloque  = encontrarMejorUsuarioSegun max bloque
 elUsuarioMasPobre bloque  = encontrarMejorUsuarioSegun min bloque
@@ -187,21 +186,25 @@ usuariosQueLleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMont
 generarBlockchainInfinito bloque = bloque : (generarBlockchainInfinito (bloque ++ bloque))
 
 aplicarBlockChain :: BlockChain -> Usuario -> Usuario
-
 aplicarBlockChain unaBlockchain unUsuario = foldr aplicarBloque unUsuario unaBlockchain
-aplicarBlockChainAMuchos unaBlockchain = map (aplicarBlockChain unaBlockchain)
---aplicarBlockChainInfinita unaBlockchainInfinita unUsuario = foldr aplicarBlockChain unUsuario unaBlockchainInfinita
 
+aplicarBlockChainAMuchos :: BlockChain -> [Usuario] -> [Usuario]
+aplicarBlockChainAMuchos unaBlockchain = map (aplicarBlockChain unaBlockchain)
+
+peorBloqueParaUnUsuario :: BlockChain -> Usuario -> Bloque
 peorBloqueParaUnUsuario (primerBloque:restoBloque) unUsuario = foldr (compararSegun min (billetera.flip aplicarBloque unUsuario)) primerBloque restoBloque
 
+aplicarPrimerosNBloquesAUsuario :: Int -> BlockChain -> Usuario -> Usuario
 aplicarPrimerosNBloquesAUsuario n blockChain = aplicarBlockChain (take n blockChain)
 
-cantBloquesParaLlegarNMonedas saldo (bloque:restoBloques) = (length.bloquesParaLLegarNMonedas saldo (bloque:restoBloques))
 
---bloquesParaLlegarNSaldo :: Monedas -> [Bloque] -> Usuario -> [Transaccion]
+--bloquesParaLlegarNSaldo :: Monedas -> BlockChain -> Usuario -> Bloque
 bloquesParaLLegarNMonedas saldo (bloque:restoBloques) unUsuario
   | billetera unUsuario < saldo = bloque : bloquesParaLLegarNMonedas saldo restoBloques (aplicarBloque bloque unUsuario)
   | otherwise = []
+
+cantBloquesParaLlegarNMonedas:: Monedas -> BlockChain -> Usuario -> Int
+cantBloquesParaLlegarNMonedas saldo unaBlockchain = (length.bloquesParaLLegarNMonedas saldo unaBlockchain)
 
 {-
 Para la función bloquesParaLLegarNMonedas se utilizo evaluación diferida,

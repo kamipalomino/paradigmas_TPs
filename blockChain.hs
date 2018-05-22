@@ -135,6 +135,8 @@ saldoAlMenosNMonedas n  = (<)n. billetera
 
 deAlgoTomarN :: a -> Int ->[a]
 deAlgoTomarN algo numero = (take numero. repeat) algo
+
+--aplicarTodo = foldr​ flip​ (.) id
 -----------------------BLOQUES/BLOCKCHAINS----------------------------------
 
 type Bloque = [Transaccion]
@@ -165,12 +167,10 @@ usuarioCompararSaldo criterio unUsuario otroUsuario
 
 mejorSegunSaldo criterio (primerUsuario:restoUsuarios) = foldr (usuarioCompararSaldo criterio) primerUsuario restoUsuarios
 
-
 mejorSegunBilletera [usuario] = usuario
 mejorSegunBilletera (primerUsuario:otroUsuario:restoUsuarios)
     | (>)(billetera primerUsuario) (billetera otroUsuario) = mejorSegunBilletera (primerUsuario:restoUsuarios)
 	| otherwise = mejorSegunBilletera (otroUsuario:restoUsuarios)
-
 encontrarMejorUsuarioSegun criterio bloque lista = find (compararUsuariosPorPorNombre (mejorSegunSaldo criterio (aplicarBloqueAMuchos bloque lista))) lista
 
 elUsuarioMasRickyFord bloque  = encontrarMejorUsuarioSegun max bloque
@@ -180,6 +180,11 @@ lleganANCreditos bloque unMonto = filter (saldoAlMenosNMonedas unMonto.aplicarBl
 
 blockchainInfinita unaBlockchain bloque = (unaBlockchain (++) bloque)(++)bloque 
 aplicarBlockChain unaBlockchain unUsuario = foldr aplicarBloque unUsuario unaBlockchain
+aplicarBlockChainAMuchos unaBlockchain lista = map (aplicarBlockChain unaBlockchain) lista
+--peorBloque [] _ = 0
+--peorBloque _ unUsuario = unUsuario
+--peorBloque unaBlockchain unUsuario = foldl​ flip​ ($) unUsuario unaBlockchain
+--afectarCon acciones niño = ​foldl​ (​flip​ ($)) niño acciones
 
 -- como iterar dentro cada bloque dentro del blockchain???????? sera b:bs:bss???  tanto b como bs son listas
 --componerBlockChain (b:bs) =

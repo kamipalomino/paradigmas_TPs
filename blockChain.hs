@@ -203,6 +203,6 @@ peorBloque (primerBloque:otroBloque) unUsuario = foldr (comparar min (billetera.
 aflip funcion arg1 arg2 = funcion arg2 arg1 
 
 --bloquesParaLlegarNSaldo :: Float -> BlockChain -> Usuario -> unUsuario ->
-bloquesParaLlegarNSaldo saldo (_:otroBloque) unUsuario
-  | saldo > billetera unUsuario = aplicarBlockChain (unaBlockchainInfinita otroBloque bloque1)  unUsuario
-  | otherwise = unUsuario
+bloquesParaLlegarNSaldo saldo (_:otroBloque) unUsuario 
+  | (billetera unUsuario) >= saldo = unUsuario 
+  | otherwise = bloquesParaLlegarNSaldo saldo otroBloque (aplicarBlockChain (unaBlockchainInfinita otroBloque bloque1) unUsuario)

@@ -84,7 +84,6 @@ lucho = Usuario "luciano" 2
 -----------EVENTOS-------------------------
 -- TIENEN QUE DELEGAR MAS EN LA FUNCION extraccion Y NO!! USEN GUARDA CUANDO DELEGUEN LA FUNCION (VIMOS UN EJEMPLO PARECIDO EN LAS PRIMERAS CLASES )
 
-nuevaBilletera unMonto unUsuario = unUsuario {billetera = unMonto}
 
 quedaIgual::Evento
 quedaIgual  = id   -- USAR LA FUNCION id TODO preguntar id
@@ -145,7 +144,6 @@ saldoAlMenosNMonedas n  = (<)n. billetera
 
 deAlgoTomarN :: a -> Int ->[a]
 deAlgoTomarN algo numero = (take numero. repeat) algo
-deAlgoCortarN algo numero = drop numero algo
 
 compararSegun criterio funcion unElemento otroElemento
   | (criterio) (funcion unElemento) (funcion otroElemento) == funcion unElemento = unElemento
@@ -159,13 +157,15 @@ usuarios = [pepe,lucho]
 
 bloque1 = [luchoCierraLaCuenta,pepeDeposita5Monedas,pepeDeposita5Monedas,pepeDeposita5Monedas,luchoTocaYSeVa,luchoEsUnAhorranteErrante,pepeLeDa7UnidadesALucho,luchoTocaYSeVa];
 bloque2 = deAlgoTomarN pepeDeposita5Monedas 5
-blockchain1 = [bloque2] ++ (deAlgoTomarN bloque1 10)
+blockchain1 = bloque2 : (deAlgoTomarN bloque1 10)
 blockchainInfinito = generarBlockchainInfinito bloque1
 
 usuarioLuegoDeTransaccion unaTransicion unUsuario = unaTransicion unUsuario unUsuario
 
 aplicarTransaccionAUsuario :: Transaccion -> Usuario -> Usuario
 aplicarTransaccionAUsuario transaccion unUsuario = nuevaBilletera (transaccion unUsuario (billetera unUsuario)) unUsuario
+
+nuevaBilletera unMonto unUsuario = unUsuario {billetera = unMonto}
 
 
 aplicarBloque bloque unUsuario = foldr aplicarTransaccionAUsuario unUsuario bloque

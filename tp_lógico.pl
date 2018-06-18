@@ -64,3 +64,13 @@ seriesDeInterés(Serie):-
 
 seriesDeInterés(Serie):-
   sonPopulares(Serie).
+  
+vieneZafando(Persona, Series):-
+    seriesDeInterés(Series),
+    quiereVer(Persona, Series),
+    not(leSpoileo(Sabe, Persona, Series)),
+
+  vieneZafando(Persona, Series):-
+    seriesDeInterés(Series),
+    miraSeries(Persona, Series),
+    not(leSpoileo(Sabe, Persona, Series)).

@@ -58,3 +58,9 @@ leSpoileo(Sabe, NoLaVio, Serie):-
 televidenteResponsable(Persona):-
   personas(Persona),
     not(leSpoileo(Persona, Otro, Serie)).
+    
+seriesDeInterés(Serie):-
+  cosasFuertes(Serie).
+
+seriesDeInterés(Serie):-
+  sonPopulares(Serie).

@@ -16,7 +16,10 @@ quiereVer(juan, hoc).
 quiereVer(aye, got).
 quiereVer(gastón, himym).
 
-sonPopulares(hoc, got, starWars).
+sonPopulares(Series).
+sonPopulares(hoc).
+sonPopulares(got).
+sonPopulares(starWars).
 
 episodios(Serie, Temporada, Episodios).
 episodios(got, 3, 12).

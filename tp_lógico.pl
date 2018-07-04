@@ -5,7 +5,7 @@ miraSeries(nico, [starWars, got]).
 miraSeries(maiu, [starWars, got, onePiece]).
 miraSeries(gaston, [hoc]).
 personas(Persona):-
-  miraSeries(Persona,Serie).
+  miraSeries(Persona,_).
 
 %Alf no ve ninguna serie porque el doctorado le consume toda la vida
 %Alf no se define por no pertenecer a los que miran series. No hace falta negarlo

@@ -3,7 +3,7 @@ miraSeries(Persona, [Series]).
 miraSeries(juan, [himym, futurama, got]).
 miraSeries(nico, [starWars, got]).
 miraSeries(maiu, [starWars, got, onePiece]).
-miraSeries(gaston, hoc).
+miraSeries(gaston, [hoc]).
 personas(Persona):-
   miraSeries(Persona,Serie).
 

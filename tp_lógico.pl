@@ -48,15 +48,21 @@ leDijo(aye, gaston, got, relacion(amistad, tyrion, dragon)).
 esSpoiler(Serie, Spoiler):-   %es consulta existencial
   paso(Serie,_,_,Spoiler).
 
+%miraOPlaneaVer que nos diga si una persona mira o planea ver una serie
+miraOPlaneaVer(Persona, Serie):-
+  miraSeries(Persona, Serie).
+miraOPlaneaVer(Persona, Serie):-
+  quiereVer(Persona, Serie).
+
 leSpoileo(Sabe, NoLaVio, Serie):-
-  miraSeries(NoLaVio, Serie),
+  miraOPlaneaVer(NoLaVio, Serie),
   leDijo(Sabe, NoLaVio, Serie, Spoiler),
   esSpoiler(Serie, Spoiler).
 
-  leSpoileo(Sabe, NoLaVio, Serie):-
-    leDijo(Sabe, NoLaVio, Serie, Spoiler),
-    esSpoiler(Serie, Spoiler),
-      quiereVer(NoLaVio, Serie).
+%  leSpoileo(Sabe, NoLaVio, Serie):-
+ %   leDijo(Sabe, NoLaVio, Serie, Spoiler),
+  %  esSpoiler(Serie, Spoiler),
+   %   quiereVer(NoLaVio, Serie).
 
 televidenteResponsable(Persona):-
   personas(Persona),

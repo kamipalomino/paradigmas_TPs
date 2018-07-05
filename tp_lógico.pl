@@ -210,6 +210,7 @@ cosasFuertes(Serie):-
 	paso(Serie, _, _, relacion(amorosa, _,_)).
 
 seriesDeInterés(Serie):-
+  epidodios(Serie, _, _),
   cosasFuertes(Serie).
 
 seriesDeInterés(Serie):-
@@ -219,8 +220,26 @@ vieneZafando(Persona, Series):-
     seriesDeInterés(Series),
     miraOPlaneaVer(Persona, Series),
     noLeSpoileo(_, Persona, Series).
+	
+:- begin_tests(vieneZafando).
 
- % vieneZafando(Persona, Series):-
-   % seriesDeInterés(Series),
-   % miraSeries(Persona, Series),
-   % not(leSpoileo(Sabe, Persona, Series)).
+test(maiuNoSafaConNinguna):-
+	not(vieneZafando(maiu, Serie)).
+
+	test(juanNoSafaConFuturama):-
+	not(vieneZafando(juan, futurama)).
+	
+test(juanSafaConHimym):-
+	vieneZafando(juan, himym).	
+	
+test(juanSafaConGOT):-
+	vieneZafando(juan, got).
+
+test(juanSafaConHoc):-
+	vieneZafando(juan, hoc).	
+	
+test(conStarWarsSafaSoloNico):-
+	vieneZafando(Safa, starWars), Safa == nico.
+	
+
+:- end_tests(vieneZafando).	

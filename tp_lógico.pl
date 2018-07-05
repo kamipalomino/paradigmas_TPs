@@ -12,6 +12,8 @@ miraSeries(maiu, onePiece).
 
 personas(Persona):-
   miraSeries(Persona, _).
+personas(Persona):-
+  quiereVer(Persona, _).
  
 :- encoding(utf8). 
 :- begin_tests(miraSeries).

@@ -161,10 +161,19 @@ leSpoileo(Sabe, NoLaVio, Serie):-
   leDijo(Sabe, NoLaVio, Serie, Spoiler),
   esSpoiler(Serie, Spoiler).
 
-%  leSpoileo(Sabe, NoLaVio, Serie):-
- %   leDijo(Sabe, NoLaVio, Serie, Spoiler),
-  %  esSpoiler(Serie, Spoiler),
-   %   quiereVer(NoLaVio, Serie).
+
+
+:- begin_tests(leSpoileo).
+  
+test(gastonLeSpoileoGOTAMaiu):-
+	leSpoileo(gaston, maiu, got).
+  
+test(nicoLeSpoileoStartWarsAMaiu):-
+	leSpoileo(nico, maiu, starWars).
+	
+:- end_tests(leSpoileo).  
+
+
 
 noLeSpoileo(Sabe, NoLoVio, Serie):-
   not(leSpoileo(Sabe, NoLoVio, Serie)).

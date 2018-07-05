@@ -129,6 +129,25 @@ leDijo(aye, gaston, got, relacion(amistad, tyrion, dragon)).
 esSpoiler(Serie, Spoiler):-   %es consulta existencial
   paso(Serie,_,_,Spoiler).
 
+
+  
+:- begin_tests(esSpoiler).
+test(muereEmperorEnStartWars):-
+	esSpoiler(starWars, muerte(emperor)).
+
+test(noMuerePedroEnStartWars):-
+	not(esSpoiler(starWars, muerte(pedro))).
+
+test(parentescoDeAnakinYelReyEnStartWars):-
+	esSpoiler(starWars, relacion(parentesco, anakin, rey)).
+
+test(noHayparentescoDeAnakinYLavezziEnStartWars):-
+	not(esSpoiler(starWars, relacion(parentesco, anakin, lavezzi))).
+
+:- end_tests(esSpoiler). 
+
+
+
 %miraOPlaneaVer que nos diga si una persona mira o planea ver una serie
 miraOPlaneaVer(Persona, Serie):-
   miraSeries(Persona, Serie).

@@ -1,9 +1,16 @@
 
-miraSeries(Persona, [Series]).
-miraSeries(juan, [himym, futurama, got]).
-miraSeries(nico, [starWars, got]).
-miraSeries(maiu, [starWars, got, onePiece]).
-miraSeries(gaston, [hoc]).
+miraSeries(Persona, Series).
+miraSeries(juan, himym).
+miraSeries(nico, starWars).
+miraSeries(maiu, starWars).
+miraSeries(gaston, hoc).
+miraSeries(juan, futurama).
+miraSeries(nico, got).
+miraSeries(maiu, got).
+miraSeries(juan, got).
+miraSeries(maiu, onePiece).
+
+
 personas(Persona):-
   miraSeries(Persona,_).
 

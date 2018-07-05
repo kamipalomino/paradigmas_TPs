@@ -87,7 +87,7 @@ seriesDeInterés(Serie):-
 vieneZafando(Persona, Series):-
     seriesDeInterés(Series),
     miraOPlaneaVer(Persona, Series),
-    noLeSpoileo(Sabe, NoLoVio, Serie).
+    noLeSpoileo(_, Persona, Series).
 
  % vieneZafando(Persona, Series):-
    % seriesDeInterés(Series),

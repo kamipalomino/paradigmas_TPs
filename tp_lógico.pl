@@ -71,9 +71,12 @@ leSpoileo(Sabe, NoLaVio, Serie):-
   %  esSpoiler(Serie, Spoiler),
    %   quiereVer(NoLaVio, Serie).
 
+noLeSpoileo(Sabe, NoLoVio, Serie):-
+  not(leSpoileo(Sabe, NoLoVio, Serie)).
+
 televidenteResponsable(Persona):-
   personas(Persona),
-    not(leSpoileo(Persona, _, _)).
+    noLeSpoileo(Sabe, _, _).
     
 seriesDeInterés(Serie):-
   cosasFuertes(Serie).
@@ -83,10 +86,10 @@ seriesDeInterés(Serie):-
   
 vieneZafando(Persona, Series):-
     seriesDeInterés(Series),
-    quiereVer(Persona, Series),
-    not(leSpoileo(Sabe, Persona, Series)),
+    miraOPlaneaVer(Persona, Series),
+    noLeSpoileo(Sabe, NoLoVio, Serie).
 
-  vieneZafando(Persona, Series):-
-    seriesDeInterés(Series),
-    miraSeries(Persona, Series),
-    not(leSpoileo(Sabe, Persona, Series)).
+ % vieneZafando(Persona, Series):-
+   % seriesDeInterés(Series),
+   % miraSeries(Persona, Series),
+   % not(leSpoileo(Sabe, Persona, Series)).

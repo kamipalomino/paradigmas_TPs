@@ -180,8 +180,29 @@ noLeSpoileo(Sabe, NoLoVio, Serie):-
 
 televidenteResponsable(Persona):-
   personas(Persona),
-    noLeSpoileo(Sabe, _, _).
-    
+    noLeSpoileo(Persona, _, _).
+
+
+:- begin_tests(televidenteResponsable).
+test(juanEsTelevieteResponsable):-
+	televidenteResponsable(juan).
+
+test(ayeEsTelevidenteResponsable):-
+	televidenteResponsable(aye).
+
+test(maiuEsTelevidenteResponsable):-
+	televidenteResponsable(maiu).
+
+test(nicoNoEsTelevidenteResponsable):-
+	not(televidenteResponsable(nico)).
+
+test(gastonNoEsTelevidenteResponsable):-
+	not(televidenteResponsable(gaston)).
+
+:- end_tests(televidenteResponsable).
+
+
+
 seriesDeInterés(Serie):-
   cosasFuertes(Serie).
 

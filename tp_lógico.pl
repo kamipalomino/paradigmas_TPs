@@ -1,5 +1,4 @@
-
-miraSeries(Persona, Series).
+%miraSeries(Persona, Series).
 miraSeries(juan, himym).
 miraSeries(nico, starWars).
 miraSeries(maiu, starWars).
@@ -12,28 +11,103 @@ miraSeries(maiu, onePiece).
 
 
 personas(Persona):-
-  miraSeries(Persona,_).
+  miraSeries(Persona, _).
+ 
+:- encoding(utf8). 
+:- begin_tests(miraSeries).
+
+test(juanMiraSeries, nondet) :-
+    miraSeries(juan, Serie), Serie == himym.
+	
+test(juanMiraSeries, nondet) :-
+    miraSeries(juan, Serie), Serie == futurama.	
+test(juanMiraSeries, nondet) :-
+    miraSeries(juan, Serie), Serie == got.
+
+test(nicoMiraSeries, nondet) :-
+    miraSeries(nico, Serie), Serie == starWars.
+test(nicoMiraSeries, nondet) :-
+    miraSeries(nico, Serie), Serie == got.
+	
+test(maiuMiraSeries) :-
+    miraSeries(maiu, Serie), Serie == starWars.
+test(maiuMiraSeries) :-
+    miraSeries(maiu, Serie), Serie == got.
+test(maiuMiraSeries) :-
+    miraSeries(maiu, Serie), Serie == onePiece.
+
+test(gastonMiraSeries) :-
+    miraSeries(gaston, Serie), Serie == hoc.
+	
+test(alfNoMiraSeries) :-
+    not(miraSeries(alf, Serie)).
+	
+:- end_tests(miraSeries). 
+ 
 
 %Alf no ve ninguna serie porque el doctorado le consume toda la vida
 %Alf no se define por no pertenecer a los que miran series. No hace falta negarlo
 
 %himym, starWars, got, futurama, hoc, onePiece, drHouse, madMen.
-quiereVer(Persona, Series).
+%quiereVer(Persona, Series).
 quiereVer(juan, hoc).
 quiereVer(aye, got).
-quiereVer(gastón, himym).
+quiereVer(gaston, himym).
 
-sonPopulares(Series).
+
+:- begin_tests(quiereVer).
+test(juanQuiereVer):-
+	quiereVer(juan, Serie), Serie == hoc.
+test(ayeQuiereVer):-
+	quiereVer(aye, Serie), Serie == got.
+test(gastonQuiereVer):-
+	quiereVer(gaston, Serie), Serie == himym.
+
+:- end_tests(quiereVer).
+
+:- begin_tests(sonPopulares).
+
+test(seriesPopulares):-
+	sonPopulares(Serie), Serie == got.
+test(seriesPopulares):-
+	sonPopulares(Serie), Serie == hoc.
+test(seriesPopulares):-
+	sonPopulares(Serie), Serie == starWars.
+	
+:- end_tests(sonPopulares).
+
+
+%sonPopulares(Series).
 sonPopulares(hoc).
 sonPopulares(got).
 sonPopulares(starWars).
 
-episodios(Serie, Temporada, Episodios).
+%episodios(Serie, Temporada, Episodios).
 episodios(got, 3, 12).
 episodios(got, 2, 10).
 episodios(himym, 1, 23).
 episodios(drHouse, 8, 16).
 episodios(madMen, 2).
+
+
+:- begin_tests(episodios).
+
+test(cuantosEpidodiosTieneGOT):-
+	episodios(got, 3, Episodio), Episodio == 12.
+test(cuantosEpidodiosTieneGOT):-
+	episodios(got, 2, Episodio), Episodio == 10.
+
+test(cuantosEpidodiosTieneHimym):-
+	episodios(himym, 1, Episodio), Episodio == 23.
+
+test(cuantosEpidodiosTieneDrHouse):-
+	episodios(drHouse, 8, Episodio), Episodio == 16.
+
+test(noSabemosCuantosEpidodiosTieneMadMen):-
+	not(episodios(madMen, 2, Episodio)).
+
+:- end_tests(episodios).
+
 
 %paso(Serie, Temporada, Episodio, Lo que paso)
 paso(futurama, 2, 3, muerte(seymourDiera)).

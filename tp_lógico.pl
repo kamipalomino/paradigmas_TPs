@@ -202,6 +202,12 @@ test(gastonNoEsTelevidenteResponsable):-
 :- end_tests(televidenteResponsable).
 
 
+cosasFuertes(Serie):-
+	paso(Serie, _, _, muerte(_)).
+cosasFuertes(Serie):-
+	paso(Serie, _, _, relacion(parentesco, _,_)).
+cosasFuertes(Serie):-
+	paso(Serie, _, _, relacion(amorosa, _,_)).
 
 seriesDeInterés(Serie):-
   cosasFuertes(Serie).

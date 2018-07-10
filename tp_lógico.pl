@@ -8,7 +8,7 @@ miraSeries(nico, got).
 miraSeries(maiu, got).
 miraSeries(juan, got).
 miraSeries(maiu, onePiece).
-
+miraSeries(pedro, got).
 
 personas(Persona):-
   miraSeries(Persona, _).
@@ -132,6 +132,10 @@ leDijo(nico, juan, got, muerte(tyrion)).
 leDijo(aye, juan, got, relacion(amistad, tyrion, john)).
 leDijo(aye, maiu, got, relacion(amistad, tyrion, john)).
 leDijo(aye, gaston, got, relacion(amistad, tyrion, dragon)).
+leDijo(nico, juan, muerte(seymourDiera)).
+leDijo(pedro, aye, relacion(amistad, tyrion, dragon)).
+leDijo(pedro, nico, relacion(parentesco, tyrion, dragon)).
+
 
 esSpoiler(Serie, Spoiler):-   %es consulta existencial
   paso(Serie,_,_,Spoiler).

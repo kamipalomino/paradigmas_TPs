@@ -119,6 +119,11 @@ paso(starWars, 3, 2, relacion(parentesco, vader, luke)).
 paso(himym, 1, 1, relacion(amorosa, ted, robin)).
 paso(himym, 4, 3, relacion(amorosa, swarley, robin)).
 paso(got, 4, 5, relacion(amistad, tyrion, dragon)).
+paso(got, 3, 2, plotTwist([suenio, sinPiernas])).
+paso(got, 3, 12, plotTwist([fuego, boda])).
+paso(supercampeones, 9, 9, plotTwist([suenio, coma, sinPiernas])).
+paso(drHouse, 8, 7, plotTwist([coma, pastillas])).
+
 
 %leDijo/4
 leDijo(gaston, maiu, got, relacion(amistad, tyrion, dragon)).

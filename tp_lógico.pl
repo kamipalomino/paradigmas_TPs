@@ -20,30 +20,24 @@ personas(Persona):-
 
 test(juanMiraSeries, nondet) :-
     miraSeries(juan, Serie), Serie == himym.
-	
 test(juanMiraSeries, nondet) :-
     miraSeries(juan, Serie), Serie == futurama.	
 test(juanMiraSeries, nondet) :-
     miraSeries(juan, Serie), Serie == got.
-
 test(nicoMiraSeries, nondet) :-
     miraSeries(nico, Serie), Serie == starWars.
 test(nicoMiraSeries, nondet) :-
     miraSeries(nico, Serie), Serie == got.
-	
 test(maiuMiraSeries) :-
     miraSeries(maiu, Serie), Serie == starWars.
 test(maiuMiraSeries) :-
     miraSeries(maiu, Serie), Serie == got.
 test(maiuMiraSeries) :-
     miraSeries(maiu, Serie), Serie == onePiece.
-
 test(gastonMiraSeries) :-
     miraSeries(gaston, Serie), Serie == hoc.
-	
 test(alfNoMiraSeries) :-
     not(miraSeries(alf, Serie)).
-	
 :- end_tests(miraSeries). 
  
 
@@ -64,18 +58,16 @@ test(ayeQuiereVer):-
 	quiereVer(aye, Serie), Serie == got.
 test(gastonQuiereVer):-
 	quiereVer(gaston, Serie), Serie == himym.
-
 :- end_tests(quiereVer).
 
-:- begin_tests(sonPopulares).
 
+:- begin_tests(sonPopulares).
 test(seriesPopulares):-
 	sonPopulares(Serie), Serie == got.
 test(seriesPopulares):-
 	sonPopulares(Serie), Serie == hoc.
 test(seriesPopulares):-
 	sonPopulares(Serie), Serie == starWars.
-	
 :- end_tests(sonPopulares).
 
 
@@ -93,21 +85,16 @@ episodios(madMen, 2).
 
 
 :- begin_tests(episodios).
-
 test(cuantosEpidodiosTieneGOT):-
 	episodios(got, 3, Episodio), Episodio == 12.
 test(cuantosEpidodiosTieneGOT):-
 	episodios(got, 2, Episodio), Episodio == 10.
-
 test(cuantosEpidodiosTieneHimym):-
 	episodios(himym, 1, Episodio), Episodio == 23.
-
 test(cuantosEpidodiosTieneDrHouse):-
 	episodios(drHouse, 8, Episodio), Episodio == 16.
-
 test(noSabemosCuantosEpidodiosTieneMadMen):-
 	not(episodios(madMen, 2, Episodio)).
-
 :- end_tests(episodios).
 
 
@@ -145,18 +132,13 @@ esSpoiler(Serie, Spoiler):-   %es consulta existencial
 :- begin_tests(esSpoiler).
 test(muereEmperorEnStartWars):-
 	esSpoiler(starWars, muerte(emperor)).
-
 test(noMuerePedroEnStartWars):-
 	not(esSpoiler(starWars, muerte(pedro))).
-
 test(parentescoDeAnakinYelReyEnStartWars):-
 	esSpoiler(starWars, relacion(parentesco, anakin, rey)).
-
 test(noHayparentescoDeAnakinYLavezziEnStartWars):-
 	not(esSpoiler(starWars, relacion(parentesco, anakin, lavezzi))).
-
 :- end_tests(esSpoiler). 
-
 
 
 %miraOPlaneaVer que nos diga si una persona mira o planea ver una serie
@@ -171,17 +153,12 @@ leSpoileo(Sabe, NoLaVio, Serie):-
   esSpoiler(Serie, Spoiler).
 
 
-
 :- begin_tests(leSpoileo).
-  
 test(gastonLeSpoileoGOTAMaiu):-
 	leSpoileo(gaston, maiu, got).
-  
 test(nicoLeSpoileoStartWarsAMaiu):-
 	leSpoileo(nico, maiu, starWars).
-	
 :- end_tests(leSpoileo).  
-
 
 
 noLeSpoileo(Sabe, NoLoVio, Serie):-
@@ -189,25 +166,20 @@ noLeSpoileo(Sabe, NoLoVio, Serie):-
 
 televidenteResponsable(Persona):-
   personas(Persona),
-    noLeSpoileo(Persona, _, _).
+  noLeSpoileo(Persona, _, _).
 
 
 :- begin_tests(televidenteResponsable).
 test(juanEsTelevieteResponsable):-
 	televidenteResponsable(juan).
-
 test(ayeEsTelevidenteResponsable):-
 	televidenteResponsable(aye).
-
 test(maiuEsTelevidenteResponsable):-
 	televidenteResponsable(maiu).
-
 test(nicoNoEsTelevidenteResponsable):-
 	not(televidenteResponsable(nico)).
-
 test(gastonNoEsTelevidenteResponsable):-
 	not(televidenteResponsable(gaston)).
-
 :- end_tests(televidenteResponsable).
 
 
@@ -230,25 +202,34 @@ vieneZafando(Persona, Series):-
     miraOPlaneaVer(Persona, Series),
     noLeSpoileo(_, Persona, Series).
 	
+	
 :- begin_tests(vieneZafando).
-
 test(maiuNoSafaConNinguna):-
 	not(vieneZafando(maiu, Serie)).
-
-	test(juanNoSafaConFuturama):-
+test(juanNoSafaConFuturama):-
 	not(vieneZafando(juan, futurama)).
-	
 test(juanSafaConHimym):-
-	vieneZafando(juan, himym).	
-	
+	vieneZafando(juan, himym).
 test(juanSafaConGOT):-
 	vieneZafando(juan, got).
-
 test(juanSafaConHoc):-
 	vieneZafando(juan, hoc).	
-	
 test(conStarWarsSafaSoloNico):-
 	vieneZafando(Safa, starWars), Safa == nico.
-	
-
 :- end_tests(vieneZafando).	
+
+
+
+hablóCon(Persona, Alguien):-
+	personas(Persona),
+	leDijo(Persona, Alguien, _,_).	
+
+	
+malaGente(Persona):-
+	personas(Persona),
+	forall(habloCon(Persona, Alguien), leSpoileo(Persona, Alguien, _)).
+	
+malaGente(Persona):-
+	personas(Persona),
+	leSpoileo(Persona, _, Serie),
+	not(miraSeries(Persona, Serie)).

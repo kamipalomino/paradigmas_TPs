@@ -233,3 +233,14 @@ malaGente(Persona):-
 	personas(Persona),
 	leSpoileo(Persona, _, Serie),
 	not(miraSeries(Persona, Serie)).
+	
+:- begin_tests(malaGente).
+test(gastonEsMalaGente, nondet):-
+	malaGente(gaston).
+test(nicoMalaGente, nondet):-
+	malaGente(nico).
+test(pedroNoEsMalaGente, nondet):-
+	not(malaGente(pedro)).
+:- end_tests(malaGente).
+
+	

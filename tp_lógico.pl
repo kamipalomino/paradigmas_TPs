@@ -1,3 +1,4 @@
+:- encoding(utf8).
 %miraSeries(Persona, Series).
 miraSeries(juan, himym).
 miraSeries(nico, starWars).
@@ -14,14 +15,16 @@ personas(Persona):-
   miraSeries(Persona, _).
 personas(Persona):-
   quiereVer(Persona, _).
- 
-:- encoding(utf8). 
+
+serie(Serie):- miraSeries(_, Serie).
+
+
 :- begin_tests(miraSeries).
 
 test(juanMiraSeries, nondet) :-
     miraSeries(juan, Serie), Serie == himym.
 test(juanMiraSeries, nondet) :-
-    miraSeries(juan, Serie), Serie == futurama.	
+    miraSeries(juan, Serie), Serie == futurama.
 test(juanMiraSeries, nondet) :-
     miraSeries(juan, Serie), Serie == got.
 test(nicoMiraSeries, nondet) :-
@@ -38,8 +41,8 @@ test(gastonMiraSeries) :-
     miraSeries(gaston, Serie), Serie == hoc.
 test(alfNoMiraSeries) :-
     not(miraSeries(alf, Serie)).
-:- end_tests(miraSeries). 
- 
+:- end_tests(miraSeries).
+
 
 %Alf no ve ninguna serie porque el doctorado le consume toda la vida
 %Alf no se define por no pertenecer a los que miran series. No hace falta negarlo
@@ -128,7 +131,7 @@ esSpoiler(Serie, Spoiler):-   %es consulta existencial
   paso(Serie,_,_,Spoiler).
 
 
-  
+
 :- begin_tests(esSpoiler).
 test(muereEmperorEnStartWars):-
 	esSpoiler(starWars, muerte(emperor)).
@@ -138,7 +141,7 @@ test(parentescoDeAnakinYelReyEnStartWars):-
 	esSpoiler(starWars, relacion(parentesco, anakin, rey)).
 test(noHayparentescoDeAnakinYLavezziEnStartWars):-
 	not(esSpoiler(starWars, relacion(parentesco, anakin, lavezzi))).
-:- end_tests(esSpoiler). 
+:- end_tests(esSpoiler).
 
 
 %miraOPlaneaVer que nos diga si una persona mira o planea ver una serie
@@ -158,7 +161,7 @@ test(gastonLeSpoileoGOTAMaiu):-
 	leSpoileo(gaston, maiu, got).
 test(nicoLeSpoileoStartWarsAMaiu):-
 	leSpoileo(nico, maiu, starWars).
-:- end_tests(leSpoileo).  
+:- end_tests(leSpoileo).
 
 
 noLeSpoileo(Sabe, NoLoVio, Serie):-
@@ -196,13 +199,13 @@ seriesDeInterés(Serie):-
 
 seriesDeInterés(Serie):-
   sonPopulares(Serie).
-  
+
 vieneZafando(Persona, Series):-
     seriesDeInterés(Series),
     miraOPlaneaVer(Persona, Series),
     noLeSpoileo(_, Persona, Series).
-	
-	
+
+
 :- begin_tests(vieneZafando).
 test(maiuNoSafaConNinguna):-
 	not(vieneZafando(maiu, Serie)).
@@ -213,27 +216,25 @@ test(juanSafaConHimym):-
 test(juanSafaConGOT):-
 	vieneZafando(juan, got).
 test(juanSafaConHoc):-
-	vieneZafando(juan, hoc).	
+	vieneZafando(juan, hoc).
 test(conStarWarsSafaSoloNico):-
 	vieneZafando(Safa, starWars), Safa == nico.
-:- end_tests(vieneZafando).	
+:- end_tests(vieneZafando).
 
 
-
-hablóCon(Persona, Alguien):-
+habloCon(Persona, Alguien):-
 	personas(Persona),
-	leDijo(Persona, Alguien, _,_).	
+	leDijo(Persona, Alguien, _,_).
 
-	
 malaGente(Persona):-
-	personas(Persona),
-	forall(habloCon(Persona, Alguien), leSpoileo(Persona, Alguien, _)).
-	
+  personas(Persona),
+  forall(habloCon(Persona, Alguien), leSpoileo(Persona, Alguien, _)).
+
 malaGente(Persona):-
 	personas(Persona),
 	leSpoileo(Persona, _, Serie),
 	not(miraSeries(Persona, Serie)).
-	
+
 :- begin_tests(malaGente).
 test(gastonEsMalaGente, nondet):-
 	malaGente(gaston).
@@ -243,4 +244,31 @@ test(pedroNoEsMalaGente, nondet):-
 	not(malaGente(pedro)).
 :- end_tests(malaGente).
 
-	
+
+popularidad(Serie, Popular):-
+  cuantosVen(Serie, Cantidad1),
+  cuantosHablanDe(Serie, C2),
+  Popular is Cantidad1*C2.
+
+cuantosVen(Serie, Cantidad):-
+  miraSeries(Persona, Serie),
+  findall(Persona, miraSeries(_,Serie), Personas),
+  length(Personas, Cantidad).
+
+cuantosHablanDe(Serie, Cantidad):-
+  miraSeries(Persona, Serie),
+  findall(Persona, leDijo(_,_,Serie,_), Personas),
+  length(Personas, Cantidad).
+
+
+esPopular(starWars).
+esPopular(hoc).
+esPopular(Serie):-
+  popularidad(Serie, C1),
+  popularidad(starWars, C2),
+  C1 >= C2.
+
+amigo(nico, maiu).
+amigo(maiu, gaston).
+amigo(maiu, juan).
+amigo(juan, aye).

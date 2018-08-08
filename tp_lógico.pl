@@ -268,6 +268,16 @@ esPopular(Serie):-
   popularidad(starWars, C2),
   C1 >= C2.
 
+:- begin_tests(esPopular).
+test(gotEsPopular):-
+	esPopular(got).
+test(startWarsEsPopular):-
+	esPopular(starWars).
+test(hocEsPopular):-
+  esPopular(hoc).
+:- end_tests(esPopular).
+
+
 amigo(nico, maiu).
 amigo(maiu, gaston).
 amigo(maiu, juan).

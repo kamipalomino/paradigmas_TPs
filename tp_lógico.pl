@@ -289,3 +289,18 @@ fullSpoil(Alguien, Otro):-
   amigo(Amigo, Otro),
   fullSpoil(Alguien, Amigo),
   Alguien \= Otro.
+
+:- begin_tests(fullSpoil).
+test(nicoHaceFullSpoil):-
+  fullSpoil(nico, Alguien), Alguien == maiu.
+  Alguien == aye.
+  Alguien == juan.
+  Alguien == gaston.
+test(gastonHaceFullSpoil, nondet):-
+  fullSpoil(gaston, Alguien),
+  Alguien == maiu.
+  Alguien == juan.
+  Alguien == aye.
+test(maiuNoHaceFullSpoil, nondet):-
+  not(fullSpoil(maiu,Alguien)).
+:- end_tests(fullSpoil)

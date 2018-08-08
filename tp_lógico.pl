@@ -277,8 +277,15 @@ test(hocEsPopular):-
   esPopular(hoc).
 :- end_tests(esPopular).
 
-
 amigo(nico, maiu).
 amigo(maiu, gaston).
 amigo(maiu, juan).
 amigo(juan, aye).
+
+fullSpoil(Alguien, Otro):-
+  leSpoileo(Alguien, Otro, _).
+
+fullSpoil(Alguien, Otro):-
+  amigo(Amigo, Otro),
+  fullSpoil(Alguien, Amigo),
+  Alguien \= Otro.

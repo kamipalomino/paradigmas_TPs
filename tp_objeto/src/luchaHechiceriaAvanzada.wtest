@@ -1,0 +1,78 @@
+import rolando.*
+
+test "si tiene mas de 5 objetos, rolando esta cargado" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(ninguno)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.that(rolando.estaCargado())
+
+}
+
+test "si se remueve la armadura, rolando no esta cargado" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(ninguno)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	rolando.removeArtefacto(armadura)
+	assert.notThat(rolando.estaCargado())
+
+}
+
+test "rolando tiene una habilidad de lucha igual a 20" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(ninguno)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.equals(rolando.nivelLucha(),20)
+
+}
+
+test "si rolando tiene bendicion en la armadura, entonces la armadura tiene habilidad de lucha igual a 58" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(bendicion)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.equals(armadura.unidadesDeLucha(),58)
+
+}
+
+test "si rolando tiene cota de malla en la armadura, entonces la armadura tiene habilidad de lucha igual a 3" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(cotaDeMalla)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.equals(armadura.unidadesDeLucha(),3)
+
+}
+
+test "si rolando tiene hechizo basico en la armadura, entonces la armadura tiene habilidad de lucha igual a 12" {
+	rolando.removeTodosLosArtefactos()
+	hechizo.hechizo(hechizoBasico)
+	armadura.refuerzo(hechizo)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.equals(armadura.unidadesDeLucha(),12)
+
+}
+
+test "si rolando tiene espectro malefico en la armadura, entonces la armadura tiene habilidad de lucha igual a 19" {
+	rolando.removeTodosLosArtefactos()
+	hechizo.hechizo(espectroMalefico)
+	armadura.refuerzo(hechizo)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.equals(armadura.unidadesDeLucha(),19)
+
+}
+
+test "si rolando tiene solo el espejo, entonces tiene una habilidad de lucha igual a 1" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(ninguno)
+	rolando.agregaArtefactos([espejoFantastico])
+	assert.equals(rolando.nivelLucha(),1)
+
+}
+
+test "si rolando tiene solo el espejo, entonces tiene un nivel de hechiceria igual a 56" {
+	rolando.removeTodosLosArtefactos()
+	armadura.refuerzo(ninguno)
+	libroDeHechizos.hechizos([hechizoBasico,espectroMalefico])
+	rolando.hechizoPreferido(libroDeHechizos)
+	rolando.agregaArtefactos([espadaDelDestino,collarDivino,mascaraOscura,armadura,espejoFantastico])
+	assert.equals(rolando.nivelHechiceria(),56)
+
+}

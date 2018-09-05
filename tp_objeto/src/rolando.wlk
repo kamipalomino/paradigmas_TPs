@@ -4,108 +4,94 @@
 
 object rolando {
 	
-	const nivelHechiceriaBase = 3;
-	var nivelLuchaBase = 1;
-	var hechizoPreferido =  espectroMalefico;
-	const artefactos = [];
-			
+	var property nivelHechiceriaBase = 3;
+	var property nivelLuchaBase = 1;
+	var property hechizoPreferido =  espectroMalefico;
+	const property artefactos = [ninguno];		
 	
-	method hechizoPreferido() = hechizoPreferido;	
-	method hechizoPreferido(nuevoHechizo) { hechizoPreferido = nuevoHechizo};
+	method nivelHechiceria() = (self.nivelHechiceriaBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder();
+	method sosPoderoso() = hechizoPreferido.esPoderoso()
 	
-	method nivelHechiceria() = (nivelHechiceriaBase * hechizoPreferido.poder()) + fuerzaOscura.valor();
-	method esPoderoso() = hechizoPreferido.esPoderoso()
-	
-	
-	method nivelLuchaBase(nivel) { nivelLuchaBase = nivel}
-	
-	method artefactos() = artefactos
 	method agregaArtefacto(artefacto) { self.agregaArtefactos([artefacto])}
-	method agregaArtefactos(algunosArtefactos) {artefactos.addAll(algunosArtefactos)}
-	method removeArtefacto(artefacto) { artefactos.remove(artefacto)}
-	method removeTodosLosArtefactos() { artefactos.clear()}
+	method agregaArtefactos(algunosArtefactos) {self.artefactos().addAll(algunosArtefactos)}
+	method removeArtefacto(artefacto) { self.artefactos().remove(artefacto)}
+	method removeTodosLosArtefactos() { 
+		self.artefactos().clear()
+		self.agregaArtefacto(ninguno)
+	}
 	
-	method nivelLucha() = artefactos.sum({artefacto => artefacto.unidadesDeLucha()}) + nivelLuchaBase
-	method esMejorEnLucha() = self.nivelLucha() > self.nivelHechiceria()
-	method estaCargado() = artefactos.size() >= 5
+	method nivelLucha() = self.artefactos().sum({artefacto => artefacto.poder()}) + self.nivelLuchaBase()
+	method sosMejorEnLucha() = self.nivelLucha() > self.nivelHechiceria()
+	method estasCargado() = self.artefactos().size() > 5
 	
 	
 }
 
 //fuerza oscura
 object fuerzaOscura {
+	var property poder = 5 
 	
-	var valor = 5 
-	
-	method valor() = valor
-	method valor(valorNuevo) {valor = valorNuevo}
 }
 
 object luna{
 	
-	method eclipsate(){fuerzaOscura.valor(fuerzaOscura.valor()*2)}
+	method eclipsate(){fuerzaOscura.poder(fuerzaOscura.poder()*2)}
 }
 
 
 // Hechizos
 object espectroMalefico {	
-	var nombre = "Espectro maléfico";
+	var property nombre = "Espectro maléfico";
 	
-	method nombre(nuevoNombre) { nombre = nuevoNombre};
-	method poder() = nombre.size();	
-	method esPoderoso() = return self.poder() > 15;
+	method poder() = self.nombre().size();	
+	method sosPoderoso() = return self.poder() > 15;
 }
 
 object hechizoBasico {	
 	method poder() = 10;	
-	method esPoderoso() = return self.poder() > 15;
+	method sosPoderoso() = return self.poder() > 15;
 }
 
 //Artefactos
 object espadaDelDestino{
-	
-	method unidadesDeLucha() = 3;
+	method poder() = 3;
 }
+
 object collarDivino{
 	
-	var cantDePerlas = 5
-	
-	method cantDePerlas(cantidad) {cantDePerlas = cantidad}
-	method unidadesDeLucha() = cantDePerlas;
+	var property cantDePerlas = 5	
+	method poder() = self.cantDePerlas();
 }
 
 object mascaraOscura{
-	method unidadesDeLucha() =  (fuerzaOscura.valor()/2).max(4);
+	method poder() =  (fuerzaOscura.poder()/2).max(4);
 }
 object armadura{
-	var refuerzo = cotaDeMalla;
-	method refuerzo(nuevoRefuerzo) {refuerzo = nuevoRefuerzo}
-	method unidadesDeLucha() = refuerzo.unidadesDeLucha() + 2;
+	var property refuerzo = cotaDeMalla;
+	method poder() = self.refuerzo().poder() + 2;
 }
 
 object espejoFantastico{
-	method unidadesDeLucha() = self.listaSinEspejo(rolando.artefactos()).max({artefacto => artefacto.unidadesDeLucha()}).unidadesDeLucha()
-	method listaSinEspejo(lista) = lista.filter({elemento => elemento != self})
+	method poder() = rolando.artefactos().filter({elemento => elemento != self})
+	.max({artefacto => artefacto.poder()}).poder()
 
 }
 //Refuerzos armadura
 object cotaDeMalla{
-	method unidadesDeLucha() =  1;
+	method poder() =  1;
 }
 object bendicion{
-	method unidadesDeLucha() =  rolando.nivelHechiceria();
+	method poder() =  rolando.nivelHechiceria();
 }
-object hechizo{
-	var hechizo = hechizoBasico
-	method hechizo(unHechizo) {hechizo = unHechizo}
-	method unidadesDeLucha() =  hechizo.poder();
+
+object ninguno{
+	method poder() =  0;
+	method sosPoderoso() = false
 }
-object ninguno{ //es realmente necesario este?
-	method unidadesDeLucha() =  0;
-}
+
 //Libros de hechizos
-object libroDeHechizos{ //es realmente necesario este?
-	var hechizos =  [];
-	method hechizos(nuevosHechizos) = [hechizos.addAll(nuevosHechizos)]
-    method poder() = hechizos.filter({hechizo => hechizo.esPoderoso()}).sum({hechizo => hechizo.poder()})	
+object libroDeHechizos{ 
+	var property hechizos =  [ninguno];
+	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
+    method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})	
 }

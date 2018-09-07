@@ -1,54 +1,53 @@
 //preguntar
-//no repetir codigo en el test
 //objeto luna para eclipse
-
+//harcodear rolando en espejo y bendicion
 object rolando {
-	
+
 	var property nivelHechiceriaBase = 3;
 	var property nivelLuchaBase = 1;
 	var property hechizoPreferido =  espectroMalefico;
-	const property artefactos = [ninguno];		
-	
+	const property artefactos = [ninguno];
+
 	method nivelHechiceria() = (self.nivelHechiceriaBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder();
 	method sosPoderoso() = hechizoPreferido.esPoderoso()
-	
+
 	method agregaArtefacto(artefacto) { self.agregaArtefactos([artefacto])}
 	method agregaArtefactos(algunosArtefactos) {self.artefactos().addAll(algunosArtefactos)}
 	method removeArtefacto(artefacto) { self.artefactos().remove(artefacto)}
-	method removeTodosLosArtefactos() { 
+	method removeTodosLosArtefactos() {
 		self.artefactos().clear()
 		self.agregaArtefacto(ninguno)
 	}
-	
+
 	method nivelLucha() = self.artefactos().sum({artefacto => artefacto.poder()}) + self.nivelLuchaBase()
 	method sosMejorEnLucha() = self.nivelLucha() > self.nivelHechiceria()
 	method estasCargado() = self.artefactos().size() > 5
-	
-	
+
+
 }
 
 //fuerza oscura
 object fuerzaOscura {
-	var property poder = 5 
-	
+	var property poder = 5
+
 }
 
 object luna{
-	
+
 	method eclipsate(){fuerzaOscura.poder(fuerzaOscura.poder()*2)}
 }
 
 
 // Hechizos
-object espectroMalefico {	
+object espectroMalefico {
 	var property nombre = "Espectro maléfico";
-	
-	method poder() = self.nombre().size();	
+
+	method poder() = self.nombre().size();
 	method sosPoderoso() = return self.poder() > 15;
 }
 
-object hechizoBasico {	
-	method poder() = 10;	
+object hechizoBasico {
+	method poder() = 10;
 	method sosPoderoso() = return self.poder() > 15;
 }
 
@@ -58,8 +57,8 @@ object espadaDelDestino{
 }
 
 object collarDivino{
-	
-	var property cantDePerlas = 5	
+
+	var property cantDePerlas = 5
 	method poder() = self.cantDePerlas();
 }
 
@@ -90,8 +89,8 @@ object ninguno{
 }
 
 //Libros de hechizos
-object libroDeHechizos{ 
+object libroDeHechizos{
 	var property hechizos =  [ninguno];
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
-    method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})	
+    method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }

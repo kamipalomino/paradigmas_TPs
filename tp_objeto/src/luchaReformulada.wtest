@@ -1,0 +1,48 @@
+import rolando2.*
+
+describe "test de lucha reformulada de rolando" {
+
+	var rolando
+	var espadaDelDestino
+	var mascaraOscura
+	fixture {
+		
+		rolando = new Personaje()
+		espadaDelDestino = new ArmaDelDestino()
+		mascaraOscura = new MascaraOscura(indiceOscuridad=1)
+		rolando.agregaArtefactos([ espadaDelDestino, collarDivino, mascaraOscura ])
+		collarDivino.cantDePerlas(5)
+	}
+
+	test "si Rolando no tiene artefactos, entonces su habilidad de lucha es 1" {
+		rolando.removeTodosLosArtefactos()
+		assert.equals(rolando.nivelLucha(), 1)
+	}
+
+	test "si Rolando tiene todos los artefactos, entonces su habilidad de lucha es 13" {
+		
+		assert.equals(rolando.nivelLucha(), 13)
+	}
+
+	test "si el collar tiene 3 perlas, entonces su habilidad de lucha es de 11 " {
+		collarDivino.cantDePerlas(3)
+		assert.equals(rolando.nivelLucha(), 11)
+	}
+
+	test "si su valor base de lucha es 8, entonces su habilidad de lucha es de 20 " {
+		rolando.nivelLuchaBase(8)
+		assert.equals(rolando.nivelLucha(), 20)
+	}
+
+	test "si hay un eclipse, entonces la mascara oscura tiene una habilidad de lucha de 5 " {
+		luna.eclipsate()
+		assert.equals(mascaraOscura.poder(), 5)
+	}
+
+	test "si eliminamos la mascara de lucha, entonces su habilidad de lucha es de 9 " {
+		rolando.removeArtefacto(mascaraOscura)
+		assert.equals(rolando.nivelLucha(), 9)
+	}
+
+}
+

@@ -41,9 +41,10 @@ object luna{
 
 // Hechizos -- definir hechizos como clase y luego tipos de hechizos?
 class Logos {
-	var property nombre = "";	// con property le puedo cambiar el nombre?	
+	var property nombre = "";	// can property le puedo cambiar el nombre?	
+	var property multiplicador = 1
     method precio() = feriaHechiceria.hechizoBasicoPrecio();
-	method poder() = self.nombre().size();
+	method poder() = self.nombre().size() * self.multiplicador();
 	method sosPoderoso() = return self.poder() > 15;
 }
 
@@ -65,8 +66,9 @@ object collarDivino{
 }
 
 class MascaraOscura{	
-	var property indiceOscuridad = 4;
-	method poder() =  (fuerzaOscura.poder()/2).max(indiceOscuridad);
+	var property indiceOscuridad = 0
+	var property minimoPoder = 4
+	method poder() = self.minimoPoder().max((fuerzaOscura.poder()/2)*self.indiceOscuridad());
 }
 class Armadura{
 	var property poderBase = 2;
@@ -98,8 +100,8 @@ object ninguno{
 
 //Libros de hechizos
 class LibroDeHechizos{
-	method precio() = feriaHechiceria.libroDeHechizosPrecio(self);
 	var property hechizos =  [ninguno];
+	method precio() = feriaHechiceria.libroDeHechizosPrecio(self);
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
     method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }
@@ -114,21 +116,21 @@ object feriaHechiceria{
 	method armaduraConBendicionPrecio(armadura) = armadura.poderBase();
 	method armaduraConHechizoPrecio(armadura) = armadura.poderBase() + armadura.refuerzo().precio();
 	method armaduraSinRefuerzoPrecio() =  2;
-	method armaduraPrecio(armadura) {
-		if(armadura.refuerzo() == cotaDeMalla){
-			return armaduraConCotaPrecio(armadura.refuerzo());
-		}
-		else if(armadura.refuerzo() == bendicion){
-			return  armaduraConBendicionPrecio(armadura);
-		}
-		else if(armadura.refuerzo() == Logos || armadura.refuerzo() == hechizoBasico){ // Hechizos -- definir hechizos como clase y luego tipos de hechizos?
-			return armaduraConHechizoPrecio(armadura);
-		}
-		else{
-			return armaduraSinRefuerzoPrecio();
-		}		
-	}
-	method espejoFantasticoPrecio() =  90;
+//	method armaduraPrecio(armadura) {
+//		if(armadura.refuerzo() == cotaDeMalla){
+//			return armaduraConCotaPrecio(armadura.refuerzo());
+//		}
+//		else if(armadura.refuerzo() == bendicion){
+//			return  armaduraConBendicionPrecio(armadura);
+//		}
+//		else if(armadura.refuerzo() == Logos || armadura.refuerzo() == hechizoBasico){ // Hechizos -- definir hechizos como clase y luego tipos de hechizos?
+//			return armaduraConHechizoPrecio(armadura);
+//		}
+//		else{
+//			return armaduraSinRefuerzoPrecio();
+//		}		
+//	}
+//	method espejoFantasticoPrecio() =  90;
 	method libroDeHechizosPrecio(libroDeHechizos) = libroDeHechizos.poder() + (10 * libroDeHechizos.hechizos().size());	
 }
 

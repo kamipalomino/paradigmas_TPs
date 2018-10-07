@@ -48,7 +48,7 @@ object espectroMalefico {
 
 object hechizoBasico {
 	method poder() = 10;
-	method sosPoderoso() = return self.poder() > 15;
+	method sosPoderoso() = false;
 }
 
 //Artefactos

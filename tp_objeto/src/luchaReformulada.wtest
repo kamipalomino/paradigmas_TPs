@@ -43,6 +43,16 @@ describe "test de lucha reformulada de rolando" {
 		rolando.removeArtefacto(mascaraOscura)
 		assert.equals(rolando.nivelLucha(), 9)
 	}
+	
+	test "tener una mascara para nada oscura, debe tener un valor de 4 " {
+		var mascaraParaNadaOscura = new MascaraOscura(indiceOscuridad=0)
+		assert.equals(mascaraParaNadaOscura.poder(), 4)
+	}
+	
+	test "tener una mascara para nada oscura con valor minimo 2, debe tener un valor de 2  " {
+		var mascaraParaNadaOscura = new MascaraOscura(indiceOscuridad=0,minimoPoder=2)
+		assert.equals(mascaraParaNadaOscura.poder(), 2)
+	}
 
 }
 

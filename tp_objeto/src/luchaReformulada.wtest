@@ -5,13 +5,14 @@ describe "test de lucha reformulada de rolando" {
 	var rolando
 	var espadaDelDestino
 	var mascaraOscura
+	var collarDivino
 	fixture {
 		
 		rolando = new Personaje()
 		espadaDelDestino = new ArmaDelDestino()
 		mascaraOscura = new MascaraOscura(indiceOscuridad=1)
+		collarDivino = new CollarDivino(cantDePerlas=5)
 		rolando.agregaArtefactos([ espadaDelDestino, collarDivino, mascaraOscura ])
-		collarDivino.cantDePerlas(5)
 	}
 
 	test "si Rolando no tiene artefactos, entonces su habilidad de lucha es 1" {

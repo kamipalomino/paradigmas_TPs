@@ -12,7 +12,7 @@ var armadura
 		espadaDelDestino = new ArmaDelDestino()
 		mascaraOscura = new MascaraOscura(indiceOscuridad=1)
 		armadura = new Armadura()
-		rolando.agregaArtefactos([espadaDelDestino, collarDivino, mascaraOscura, armadura, espejoFantastico])	
+		rolando.agregaArtefactos([espadaDelDestino, new CollarDivino(cantDePerlas=5), mascaraOscura, armadura, espejoFantastico])	
 	}
 
 	test "si tiene mas de 5 objetos, rolando esta cargado" {

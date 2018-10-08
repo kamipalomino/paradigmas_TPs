@@ -56,7 +56,7 @@ describe "test del comercio dentro del juego"{
 		xenia.compra(new Armadura())
 		xenia.compra(new Armadura(refuerzo=new CotaDeMalla(poder=5)))
 		
-		assert.equals(xenia.artefactos().size(),4)
+		assert.equals(xenia.cantidadDeArtefactos(),4)
 	}
 	
 	test "Thor compra una armadura con bendición como refuerzo, y una armadura reforzada con el hechizo alacachula, le quedan 74 monedas"{
@@ -69,14 +69,14 @@ describe "test del comercio dentro del juego"{
 	test "Loki quiere comprar el espejo, no puede"{
 		loki.compra(espejoFantastico)
 	
-		assert.notThat(loki.artefactos().find(espejoFantastico))
+		assert.notThat(loki.tiene(espejoFantastico))
 	}	
 	
 	test "Xenia canjea un libro de hechizos que contiene el hechizo de logos de nombre “alacachula cachicomula” y el hechizo básico, le quedan 69 monedas"{
 		
 		var libro = new LibroDeHechizos(hechizos=[alacachula,hechizoBasico])
 		xenia.canjea(libro)
-		assert.equals(xenia.monedas(),89)
+		assert.equals(xenia.monedas(),69)
 
 	}
 }

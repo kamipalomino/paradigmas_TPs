@@ -1,6 +1,8 @@
 // Deria cada hechizo, armadura, etc, saber su precio y la feria solo consultarlo o solo saberlo la feria, o ambos?
 // Que debo definir como clase y como subtipo o herencia?
 // con respecto a la armadura y sus refuerzos como manejar la ubicacion del precio?
+// como hago para no necesitar el objeto 'ninguno' en artefactos, por el tema del espejoPreferido
+
 class Personaje {
 
 	var property nivelHechiceriaBase = 3;
@@ -20,13 +22,16 @@ class Personaje {
 		self.artefactos().clear()
 		self.agregaArtefacto(ninguno)
 	}
+	
+	method tiene(artefacto) = self.artefactos().contains(artefacto)
 
+	method cantidadDeArtefactos() = self.artefactos().size() - 1 //le resto el objeto ninguno
 	method nivelLucha() = self.artefactos().sum({artefacto => artefacto.poder(self)}) + self.nivelLuchaBase()
 	method sosMejorEnLucha() = self.nivelLucha() > self.nivelHechiceria()
 	method estasCargado() = self.artefactos().size() > 5
 	
-	method compra(artefacto) {feria.vende(self,artefacto)}
-	method canjea(hechizo) = {feria.canjea(self,hechizo)}
+	method compra(artefacto){ feria.vende(self,artefacto)}
+	method canjea(hechizo){feria.canjea(self,hechizo)}
 
 
 
@@ -40,12 +45,12 @@ object fuerzaOscura {
 
 object luna{
 
-	method eclipsate(){fuerzaOscura.poder(fuerzaOscura.poder()*2)}
+	method eclipsate() = fuerzaOscura.poder(fuerzaOscura.poder()*2)
 }
 
 // Hechizos -- definir hechizos como clase y luego tipos de hechizos?
 class Logos {
-	var property nombre = "";	// con property le puedo cambiar el nombre?	
+	var property nombre = "";	// con property le puedo cambiar el nombre?	Si, podes :)
 	var property multiplicador = 1
  
     method poder() = self.nombre().size() * self.multiplicador();
@@ -70,14 +75,15 @@ class ArmaDelDestino{
 
 class CollarDivino{
 	var property cantDePerlas = 5;
-	method precio() = self.cantDePerlas() 
+	method precio() = self.cantDePerlas() * 2
 	method poder(personaje) = self.cantDePerlas();
 }
 
-class MascaraOscura{	
+class MascaraOscura{
 	var property indiceOscuridad = 0
 	var property minimoPoder = 4
-	method poder(personaje) = self.minimoPoder().max((fuerzaOscura.poder()/2)*self.indiceOscuridad());
+	method poder() = self.minimoPoder().max((fuerzaOscura.poder()/2)*self.indiceOscuridad());
+	method poder(personaje) = self.poder()
 }
 
 class Armadura{
@@ -88,21 +94,22 @@ class Armadura{
 	method poder(personaje) = self.refuerzo().poder(personaje) + poderBase;
 }
 
-object espejoFantastico{	
+object espejoFantastico{
 	method poder(personaje) = self.ArtefactoMasFuerte(personaje).poder(personaje)
 	method precio() = 90
 	method ArtefactoMasFuerte(personaje) = self.listaConEspejoFiltrado(personaje.artefactos()).max({elemento => elemento.poder(personaje)})
 	method listaConEspejoFiltrado(artefactos) = artefactos.filter({elemento => elemento != self})
 }
+
 //Refuerzos armadura
 
 class CotaDeMalla{
 	var property poder =  1
-	method precio() = poder/2
+	method precio() = poder/2 - (new Armadura().precioArmaduraBase())
 	method poder(personaje) = poder
 }
 object bendicion{
-	method precio() = 2 //FIXME debera ser el poderBase de la armadura
+	method precio() = 0 //FIXME debera ser el poderBase de la armadura
 	method poder(personaje) =  personaje.nivelHechiceria();
 }
 
@@ -112,29 +119,37 @@ object ninguno{
 	method sosPoderoso() = false
 }
 
-//Libros de hechizos
-class LibroDeHechizos{  //TODO libro tiene otro libro dentro
+class LibroDeHechizos{  
 	var property hechizos =  [ninguno];
-	method precio() = 10*self.hechizos().size() + self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
+	method precio() = 10*self.hechizos().size() + self.poder()
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
-    method poder(personaje) = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder(personaje)})
+    method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
     method sosPoderoso() = true //TODO el tp no especifica cuando es poderoso el libro
 }
 
 object feria{
+
 	method precio(producto) = producto.precio()
-	
+
 	method vende(personaje, artefacto) {
-		self.cobraPrecio(personaje,artefacto.precio())
-		personaje.agregaArtefacto(artefacto)
+		if(self.loPuedeComprar(personaje, artefacto.precio())){
+			self.cobraPrecio(personaje,artefacto.precio())
+			personaje.agregaArtefacto(artefacto)
+		}
 	}
 	
 	method canjea(personaje,hechizo){
-		self.cobraPrecio(personaje,0.max(hechizo.precio() - personaje.hechizoPreferido().precio()))
-		personaje.hechizoPreferido(hechizo)
+		var nuevoPrecio = self.precioRetribuido(hechizo,personaje.hechizoPreferido())
+		if(self.loPuedeComprar(personaje,nuevoPrecio)){
+			self.cobraPrecio(personaje, nuevoPrecio)
+			personaje.hechizoPreferido(hechizo)	
+		}
 	}
 	
 	method cobraPrecio(personaje,precio) = personaje.monedas(personaje.monedas()-precio)
+	method precioRetribuido(hechizoNuevo, hechizoViejo) = 0.max(hechizoNuevo.precio() - hechizoViejo.precio()/2)
+	method loPuedeComprar(personaje,precio) = personaje.monedas() > precio 
+	
 }
 
 //Tienda de Hechiceria

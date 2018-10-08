@@ -2,6 +2,7 @@
 // Que debo definir como clase y como subtipo o herencia?
 // con respecto a la armadura y sus refuerzos como manejar la ubicacion del precio?
 // como hago para no necesitar el objeto 'ninguno' en artefactos, por el tema del espejoPreferido
+// test 4 de luchaAvanzada no da bien, ni idea porque
 
 class Personaje {
 
@@ -12,7 +13,7 @@ class Personaje {
 	var property hechizoPreferido =  hechizoBasico;
 	const property artefactos = [ninguno];
 
-	method nivelHechiceria() = (self.nivelHechiceriaBase() * self.hechizoPreferido().poder(self)) + fuerzaOscura.poder();
+	method nivelHechiceria() = (self.nivelHechiceriaBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder();
 	method sosPoderoso() = hechizoPreferido.sosPoderoso(self)
 
 	method agregaArtefacto(artefacto) { self.agregaArtefactos([artefacto])}

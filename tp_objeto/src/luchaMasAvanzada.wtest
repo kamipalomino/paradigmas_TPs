@@ -1,6 +1,6 @@
 import rolando2.*
 
-describe "test de lucha y hechiceria avanzada de rolando" {
+describe "test de lucha mas avanzada de rolando" {
 
 var rolando
 var espadaDelDestino

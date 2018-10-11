@@ -1,0 +1,30 @@
+
+import rolando3.*
+
+describe"test sobre los NPC"{
+
+	var navi
+	var ashleyGraham
+	var mascaraClara
+	
+	fixture{
+		navi = new NPC()
+		mascaraClara = new MascaraOscura(indiceOscuridad=0)
+		ashleyGraham = new NPC(dificultad=moderado, nivelLuchaBase=5,artefactos=[mascaraClara])
+	}
+	
+	test "la habilidad de lucha de navi es 1"{
+		assert.equals(navi.nivelLucha(),1)
+	}
+	
+	test "la habilidad de lucha de ashleyGraham es 18"{
+		assert.equals(ashleyGraham.nivelLucha(),18)
+	}
+	
+	test "la habilidad de lucha de ashleyGraham dificultad dificil es 36"{
+		ashleyGraham.dificultad(dificil)
+		assert.equals(ashleyGraham.nivelLucha(),36)
+	}
+	
+	
+}

@@ -1,0 +1,74 @@
+import rolando3.*
+
+describe "test de lucha mas avanzada de rolando" {
+
+var rolando
+var espadaDelDestino
+var mascaraOscura
+var armadura
+	fixture {
+		rolando = new Personaje()
+		rolando.removeTodosLosArtefactos()
+		espadaDelDestino = new ArmaDelDestino()
+		mascaraOscura = new MascaraOscura(indiceOscuridad=1)
+		armadura = new Armadura()
+		rolando.agregaArtefactos([espadaDelDestino, new CollarDivino(cantDePerlas=5), mascaraOscura, armadura, espejoFantastico])	
+	}
+
+	test "si tiene mas de 5 objetos, rolando esta cargado" {
+
+		assert.that(rolando.estasCargado())
+	}
+
+	test "si se remueve la armadura, rolando no esta cargado" {
+		rolando.removeArtefacto(armadura)
+		assert.notThat(rolando.estasCargado())
+	}
+
+	test "rolando tiene una habilidad de lucha igual a 20" {
+		
+		assert.equals(rolando.nivelLucha(), 20)
+	}
+
+	test "si rolando tiene bendicion en la armadura, entonces la armadura tiene habilidad de lucha igual a 58" {
+		armadura.refuerzo(bendicion)
+		assert.equals(armadura.poder(rolando), 58)
+	}
+
+	test "si rolando tiene cota de malla en la armadura, entonces la armadura tiene habilidad de lucha igual a 3" {
+		armadura.refuerzo(new CotaDeMalla())
+		assert.equals(armadura.poder(rolando), 3)
+	}
+
+	test "si rolando tiene hechizo basico en la armadura, entonces la armadura tiene habilidad de lucha igual a 12" {
+		armadura.refuerzo(hechizoBasico)
+		assert.equals(armadura.poder(rolando), 12)
+	}
+
+	test "si rolando tiene espectro malefico en la armadura, entonces la armadura tiene habilidad de lucha igual a 19" {
+		armadura.refuerzo(new Logos(nombre="espectro Malefico"))
+		assert.equals(armadura.poder(rolando), 19) 
+	}
+
+	test "si rolando tiene solo el espejo, entonces tiene una habilidad de lucha igual a 1" {
+		rolando.removeTodosLosArtefactos()
+		rolando.agregaArtefactos([ espejoFantastico ])
+		assert.equals(rolando.nivelLucha(), 1)
+	} 
+
+	test "si rolando tiene libro de hechizos, entonces tiene un nivel de hechiceria igual a 56" {
+		
+		var libroDeHechizos = new LibroDeHechizos()
+		libroDeHechizos.hechizos([ hechizoBasico, new Logos(nombre="espectro Malefico") ])
+		rolando.hechizoPreferido(libroDeHechizos)
+		assert.equals(rolando.nivelHechiceria(), 56)
+	}
+	
+	test "si rolando tiene una armadura extra con base de 5 y cota de malla de 6, entonces tiene una habilidad de lucha igual a 37" {
+		
+		var armaduraExtra = new Armadura(poderBase=5,refuerzo=new CotaDeMalla(poder=6))
+		rolando.agregaArtefacto(armaduraExtra)
+		assert.equals(rolando.nivelLucha(),37)
+	}
+
+}

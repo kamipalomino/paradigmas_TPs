@@ -1,8 +1,3 @@
-// Deria cada hechizo, armadura, etc, saber su precio y la feria solo consultarlo o solo saberlo la feria, o ambos?
-// Que debo definir como clase y como subtipo o herencia?
-// con respecto a la armadura y sus refuerzos como manejar la ubicacion del precio?
-// como hago para no necesitar el objeto 'ninguno' en artefactos, por el tema del espejoPreferido
-// test 4 de luchaAvanzada no da bien, ni idea porque
 
 class Personaje {
 
@@ -69,9 +64,9 @@ object luna{
 	method eclipsate() = fuerzaOscura.poder(fuerzaOscura.poder()*2)
 }
 
-// Hechizos -- definir hechizos como clase y luego tipos de hechizos?
+
 class Logos {
-	var property nombre = "";	// con property le puedo cambiar el nombre?	Si, podes :)
+	var property nombre = "";	
 	var property multiplicador = 1
  
  	method peso() = 2 - (self.poder()%2)

@@ -1,4 +1,4 @@
-
+import armaduras.*
 class Personaje {
 
 	var property nivelHechiceriaBase = 3;
@@ -7,7 +7,7 @@ class Personaje {
 	const property pesoMaximo = 200
 	
 	var property hechizoPreferido =  hechizoBasico;
-	const property artefactos = [ninguno];
+	const property artefactos = [];
 
 	method nivelHechiceria() = (self.nivelHechiceriaBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder();
 	method sosPoderoso() = hechizoPreferido.sosPoderoso(self)
@@ -24,7 +24,7 @@ class Personaje {
 	method cuantoPesoTenes() = self.artefactos().sum({artefacto => artefacto.peso()})
 	method tenes(artefacto) = self.artefactos().contains(artefacto)
 
-	method cantidadDeArtefactos() = self.artefactos().size() - 1 //le resto el objeto ninguno
+	method cantidadDeArtefactos() = self.artefactos().size()
 	method nivelLucha() = self.artefactos().sum({artefacto => artefacto.poder(self)}) + self.nivelLuchaBase()
 	method sosMejorEnLucha() = self.nivelLucha() > self.nivelHechiceria()
 	method estasCargado() = self.artefactos().size() > 5

@@ -1,5 +1,6 @@
 import rolando3.*
-
+import armas.*
+import armaduras.*
 describe "test de lucha reformulada de rolando" {
 
 	var rolando

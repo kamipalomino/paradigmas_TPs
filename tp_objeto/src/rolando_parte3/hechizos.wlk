@@ -1,4 +1,5 @@
 import rolando3.*
+import armaduras.*
 
 class HechizoComercial inherits Logos{
 	var property porcentaje = 20
@@ -18,5 +19,5 @@ class LibroDeHechizos{
 	method precio() = 10*self.hechizos().size() + self.poder()
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
     method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
-    method sosPoderoso() = true //TODO el tp no especifica cuando es poderoso el libro
+    method sosPoderoso() = true 
 }

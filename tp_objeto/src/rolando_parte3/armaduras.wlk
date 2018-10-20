@@ -1,5 +1,4 @@
 
-
 class Artefacto{
 	var property peso = 0
 	const property fechaDeCompra = new Date()
@@ -63,13 +62,3 @@ object bendicion{
 	method poder(personaje) =  personaje.nivelHechiceria();
 	method peso() = 0
 }
-
-
-class LibroDeHechizos{  
-	var property hechizos =  [ninguno];
-	method precio() = 10*self.hechizos().size() + self.poder()
-	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
-    method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
-    method sosPoderoso() = true //TODO el tp no especifica cuando es poderoso el libro
-}
-

@@ -1,5 +1,5 @@
 import rolando3.*
-import armas.*
+import comerciant.*
 import armaduras.*
 describe "test de lucha reformulada de rolando" {
 
@@ -17,7 +17,7 @@ describe "test de lucha reformulada de rolando" {
 	}
 
 	test "si Rolando no tiene artefactos, entonces su habilidad de lucha es 1" {
-		rolando.removeTodosLosArtefactos()
+		
 		assert.equals(rolando.nivelLucha(), 1)
 	}
 

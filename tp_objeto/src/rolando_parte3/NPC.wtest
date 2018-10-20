@@ -1,4 +1,5 @@
-
+import armas.*
+import armaduras.*
 import rolando3.*
 
 describe"test sobre los NPC"{

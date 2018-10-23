@@ -28,14 +28,19 @@ class Personaje {
 	method cuantoPesoTenes() = self.artefactos().sum({artefacto => artefacto.peso()})
 	method tenes(artefacto) = self.artefactos().contains(artefacto)
 
-	method cantidadDeArtefactos() = self.artefactos().size() - 1 //le resto el objeto ninguno
+	method cantidadDeArtefactos() = self.artefactos().size()
 	method nivelLucha() = self.artefactos().sum({artefacto => artefacto.poder(self)}) + self.nivelLuchaBase()
 	method sosMejorEnLucha() = self.nivelLucha() > self.nivelHechiceria()
 	method estasCargado() = self.artefactos().size() > 5
 	method leAlcanza(precio) = self.monedas() > precio
 	
 	method paga(precio) =  self.monedas(self.monedas()-precio)
-	method compra(comerciante,artefacto) = comerciante.vende(self,artefacto)
+	method compra(comerciante,artefacto) {
+		if(!self.leAlcanza(precio(artefacto))&& !self.podesLlevar(artefacto)){
+			throw new Exception("No podes comprar man!")
+		} 
+		comerciante.vende(self,artefacto) && self.agregaArtefacto(artefacto)
+	}
 	method canjea(comerciante,hechizo) = comerciante.canjea(self,hechizo)
 }
 

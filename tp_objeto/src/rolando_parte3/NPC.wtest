@@ -1,7 +1,7 @@
-import armas.*
-import armaduras.*
-import rolando3.*
-
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
 describe"test sobre los NPC"{
 
 	var navi

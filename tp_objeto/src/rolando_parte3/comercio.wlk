@@ -3,18 +3,13 @@ import artefactos.*
 import hechiceria.*
 
 class Comerciante{
-
 	var property tipoComerciante
+	
 	method precio(producto) = self.tipoComerciante().comision(producto) + producto.precio()
-
-	method vende(personaje, artefacto) = self.cobraPrecio(personaje,self.precio(artefacto))
+	method vende(personaje, artefacto) = self.precio(artefacto))
 	
-	method canjea(personaje,hechizo){
-		var nuevoPrecio = self.precioRetribuido(hechizo,personaje.hechizoPreferido())
-			self.cobraPrecio(personaje, nuevoPrecio)	
-	}
+	method canjea(personaje,hechizo)= self.precioRetribuido(hechizo,personaje.hechizoPreferido())
 	
-	method cobraPrecio(personaje,precio) = personaje.paga(precio)
 	method precioRetribuido(hechizoNuevo, hechizoViejo) = 0.max(hechizoNuevo.precio() - hechizoViejo.precio()/2)
 	method recategorizate() = tipoComerciante.recategorizate(self)
 	

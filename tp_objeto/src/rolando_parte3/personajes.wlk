@@ -19,10 +19,8 @@ class Personaje {
 	method agregaArtefacto(artefacto) { self.agregaArtefactos([artefacto])}
 	method agregaArtefactos(algunosArtefactos) {self.artefactos().addAll(algunosArtefactos)}
 	method removeArtefacto(artefacto) { self.artefactos().remove(artefacto)}
-	method removeTodosLosArtefactos() {
-		self.artefactos().clear()
+	method removeTodosLosArtefactos() = self.artefactos().clear()
 		
-	}
 	
 	method podesLlevar(artefacto) = 0 <= (self.pesoMaximo() - (artefacto.peso() + self.cuantoPesoTenes()))
 	method cuantoPesoTenes() = self.artefactos().sum({artefacto => artefacto.peso()})
@@ -34,14 +32,23 @@ class Personaje {
 	method estasCargado() = self.artefactos().size() > 5
 	method leAlcanza(precio) = self.monedas() > precio
 	
+	method loPuedoComprar(producto) = self.leAlcanza(producto.precio()) && self.podesLlevar(producto)
+	method loPuedoCanjear(precio) =  self.leAlcanza(precio)
+	
+	
 	method paga(precio) =  self.monedas(self.monedas()-precio)
 	method compra(comerciante,artefacto) {
-		if(!self.leAlcanza(precio(artefacto))&& !self.podesLlevar(artefacto)){
+		if(!loPuedoComprar(artefacto)){
 			throw new Exception("No podes comprar man!")
 		} 
-		comerciante.vende(self,artefacto) && self.agregaArtefacto(artefacto)
+		self.paga(comerciante.precio(artefacto)) && self.agregaArtefacto(artefacto)
 	}
-	method canjea(comerciante,hechizo) = comerciante.canjea(self,hechizo)
+	method canjea(comerciante,hechizo){
+		if(!loPuedoCanjear(precio)){
+			throw new Exception("No tenes dinero!")
+		}
+		comerciante.canjea(self,hechizo) && self.hechizoPreferido(hechizo)
+		}
 }
 
 class NPC inherits Personaje{

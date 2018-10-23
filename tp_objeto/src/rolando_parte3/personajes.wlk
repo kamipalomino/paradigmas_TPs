@@ -47,7 +47,7 @@ class Personaje {
 		if(!loPuedoCanjear(precio)){
 			throw new Exception("No tenes dinero!")
 		}
-		comerciante.canjea(self,hechizo) && self.hechizoPreferido(hechizo)
+		self.paga(comerciante.canjea(self,hechizo)) && self.hechizoPreferido(hechizo)
 		}
 }
 

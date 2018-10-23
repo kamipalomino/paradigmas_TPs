@@ -1,6 +1,7 @@
-import rolando3.*
-import comerciant.*
-import armaduras.*
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
 describe "test de lucha reformulada de rolando" {
 
 	var rolando

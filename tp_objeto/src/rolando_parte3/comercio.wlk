@@ -1,3 +1,7 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+
 class Comerciante{
 
 	var property tipoComerciante

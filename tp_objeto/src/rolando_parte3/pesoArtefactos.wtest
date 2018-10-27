@@ -1,6 +1,6 @@
-import rolando3.*
-import armas.*
-import armaduras.*
+import personajes.*
+import artefactos.*
+import hechiceria.*
 
 
 describe "test de peso de artefactos"{

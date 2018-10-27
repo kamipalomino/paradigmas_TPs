@@ -1,7 +1,17 @@
-import personajes.*
 import artefactos.*
 import hechiceria.*
 import comercio.*
+
+//fuerza oscura
+object fuerzaOscura {
+	var property poder = 5
+
+}
+
+object luna{
+
+	method eclipsate() = fuerzaOscura.poder(fuerzaOscura.poder()*2)
+}
 
 class Personaje {
 	
@@ -35,21 +45,28 @@ class Personaje {
 	method loPuedoComprar(producto) = self.leAlcanza(producto.precio()) && self.podesLlevar(producto)
 	method loPuedoCanjear(precio) =  self.leAlcanza(precio)
 	
+	method excepcionSi(condicion, descripcion){
+    if(condicion){
+      throw new NoSePuedeComprarError(descripcion)
+    }
+  }
+	
 	
 	method paga(precio) =  self.monedas(self.monedas()-precio)
 	method compra(comerciante,artefacto) {
-		if(!loPuedoComprar(artefacto)){
-			throw new Exception("No podes comprar man!")
-		} 
-		self.paga(comerciante.precio(artefacto)) && self.agregaArtefacto(artefacto)
+		self.excepcionSi(!self.loPuedoComprar(artefacto),"No podes comprar man!")
+		self.paga(comerciante.precio(artefacto))
+		self.agregaArtefacto(artefacto)
 	}
 	method canjea(comerciante,hechizo){
-		if(!loPuedoCanjear(precio)){
-			throw new Exception("No tenes dinero!")
-		}
-		self.paga(comerciante.canjea(self,hechizo)) && self.hechizoPreferido(hechizo)
+		self.excepcionSi(!self.loPuedoCanjear(hechizo.precio()),"No podes comprar man!")
+		self.paga(comerciante.canjea(self,hechizo))
+		self.hechizoPreferido(hechizo)
 		}
 }
+
+class NoSePuedeComprarError inherits Exception {}
+
 
 class NPC inherits Personaje{
 	var property dificultad = facil 
@@ -67,13 +84,4 @@ object dificil{
 	const property valor = 4
 }
 
-//fuerza oscura
-object fuerzaOscura {
-	var property poder = 5
 
-}
-
-object luna{
-
-	method eclipsate() = fuerzaOscura.poder(fuerzaOscura.poder()*2)
-}

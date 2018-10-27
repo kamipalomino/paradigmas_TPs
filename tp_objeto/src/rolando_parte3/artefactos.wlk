@@ -1,7 +1,7 @@
 import personajes.*
-import artefactos.*
 import hechiceria.*
 import comercio.*
+
 class Artefacto{
 	var property peso = 0
 	const property fechaDeCompra = new Date()

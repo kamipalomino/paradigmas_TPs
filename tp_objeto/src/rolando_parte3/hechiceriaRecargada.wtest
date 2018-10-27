@@ -2,6 +2,8 @@ import personajes.*
 import artefactos.*
 import hechiceria.*
 import comercio.*
+import artefactos.*
+
 describe "test de hechiceria recargada de rolando"{
 
 var rolando

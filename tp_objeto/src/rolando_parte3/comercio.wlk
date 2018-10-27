@@ -5,8 +5,8 @@ import hechiceria.*
 class Comerciante{
 	var property tipoComerciante
 	
-	method precio(producto) = self.tipoComerciante().comision(producto) + producto.precio()
-	method vende(personaje, artefacto) = self.precio(artefacto))
+	method precio(personaje,producto) = self.tipoComerciante().comision(producto.precio() - producto.retribucion(personaje))  
+	method vende(personaje, producto) = personaje.paga(0.max(self.precio(personaje,producto)) )
 	
 	method canjea(personaje,hechizo)= self.precioRetribuido(hechizo,personaje.hechizoPreferido())
 	
@@ -19,7 +19,7 @@ class TipoComercianteIndependiente{
 	var property porcentajeComision
 	
 	method porcentajeComision() = porcentajeComision
-	method comision(producto) = self.porcentajeComision()/100 * producto.precio()
+	method comision(precio) = self.porcentajeComision()/100 * precio
 	method recategorizate(comerciante) = self.porcentajeComision((self.porcentajeComision()*2).min(21)) 
 } 
 
@@ -33,7 +33,7 @@ object tipoComercianteImpuestoGanancia{
 	var property maximoNoImponible = 5
 	var property porcentajeRecargo = 35
 	
-	method comision(producto) = self.diferenciaImportes(producto.precio())*self.porcentajeRecargo()/100
+	method comision(precio) = self.diferenciaImportes(precio*self.porcentajeRecargo()/100
 	method diferenciaImportes(precio) = 0.max(precio-self.maximoNoImponible())
 	method recategorizate(comerciante){}
 }

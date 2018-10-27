@@ -28,26 +28,26 @@ describe "test del comercio dentro del juego"{
 		assert.equals(alacachula.precio(),22)
 	}
 	
-	test "Xenia canjea el hechizo por un hechizo básico. le sale gratis"{
-		xenia.canjea(mockHnos,hechizoBasico)
+	test "Xenia compra el hechizo por un hechizo básico. le sale gratis"{
+		xenia.compra(mockHnos,hechizoBasico)
 		assert.equals(xenia.monedas(),100)
 	}
 	
-	test "Thor canjea el hechizo por el hechizo de logos “alacachula cachicomula”, le quedan 83 monedas"{
-		thor.canjea(mockHnos,alacachula)
+	test "Thor compra el hechizo por el hechizo de logos “alacachula cachicomula”, le quedan 83 monedas"{
+		thor.compra(mockHnos,alacachula)
 		assert.equals(thor.monedas(),83)
 	}
 	
-	test "thor canjea dos veces el mismo hechizo básico"{
-		thor.canjea(mockHnos,hechizoBasico)
-		thor.canjea(mockHnos,hechizoBasico)
+	test "thor compra dos veces el mismo hechizo básico"{
+		thor.compra(mockHnos,hechizoBasico)
+		thor.compra(mockHnos,hechizoBasico)
 		assert.equals(thor.monedas(),90)
 		
 	}
 	
-	test "Loki comienza con 5 monedas. Quiere canjear el hechizo por el de 'alacachula cachicomula' y no puede"{
+	test "Loki comienza con 5 monedas. Quiere comprar el hechizo por el de 'alacachula cachicomula' y no puede"{
 		var hechizoAnterior = loki.hechizoPreferido()
-		loki.canjea(mockHnos,alacachula)
+		loki.compra(mockHnos,alacachula)
 		assert.equals(loki.hechizoPreferido(),hechizoAnterior)
 	}
 	
@@ -100,10 +100,10 @@ describe "test del comercio dentro del juego"{
 		assert.notThat(loki.tenes(espejoFantastico))
 	}	
 	
-	test "Xenia canjea un libro de hechizos que contiene el hechizo de logos de nombre “alacachula cachicomula” y el hechizo básico, le quedan 69 monedas"{
+	test "Xenia compra un libro de hechizos que contiene el hechizo de logos de nombre “alacachula cachicomula” y el hechizo básico, le quedan 69 monedas"{
 		
 		var libro = new LibroDeHechizos(hechizos=[alacachula,hechizoBasico])
-		xenia.canjea(mockHnos, libro)
+		xenia.compra(mockHnos, libro)
 		assert.equals(xenia.monedas(),69)
 
 	}

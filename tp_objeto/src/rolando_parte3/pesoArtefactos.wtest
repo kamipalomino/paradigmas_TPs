@@ -1,6 +1,7 @@
 import personajes.*
 import artefactos.*
 import hechiceria.*
+import comercio.*
 
 
 describe "test de peso de artefactos"{
@@ -21,8 +22,8 @@ describe "test de peso de artefactos"{
 		espadaVieja = new ArmaDelDestino(fechaDeCompra = new Date(7,5,2006),peso=7 )
 		espadaNueva = new ArmaDelDestino(fechaDeCompra = new Date(),peso=4 )
 		espadaComun = new ArmaDelDestino(fechaDeCompra = new Date().plusDays(-50),peso=5 )
-		mascaraOscura = new MascaraOscura(peso=3,indiceOscuridad=1)
-		mascaraClara = new MascaraOscura(indiceOscuridad=0, peso=2)
+		mascaraOscura = new MascaraOscura(peso=3,indiceOscuridad=1,minimoPoder=1)
+		mascaraClara = new MascaraOscura(indiceOscuridad=0, peso=2,minimoPoder=0)
 		armaduraConCota = new Armadura(refuerzo=new CotaDeMalla(),peso=10)
 		armaduraHechizoPar = new Armadura(refuerzo=new HechizoComercial(nombre="el hechizo comercial"), peso=12)
 		armaduraHechizoImpar = new Armadura(refuerzo=new Logos(nombre="espectroMaleficoque"), peso=12)
@@ -41,8 +42,8 @@ describe "test de peso de artefactos"{
 		assert.equals(espadaNueva.peso(),4)
 	}
 	
-	test "el peso de la espada comun es 4.5 kilos"{
-		assert.equals(espadaComun.peso(),4.5)
+	test "el peso de la espada comun es 4.95 kilos"{
+		assert.equals(espadaComun.peso(),4.95)
 	}
 	
 	test "el peso del collar de divino es 2.5 kilos"{

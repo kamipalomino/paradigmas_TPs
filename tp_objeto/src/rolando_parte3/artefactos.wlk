@@ -9,12 +9,15 @@ class Artefacto{
 	method peso() = peso - self.factorDeCorrecion()
 	method factorDeCorrecion() = ((new Date() - self.fechaDeCompra()) /1000).min(1)
 	method precio()
+	method retribucion(unPersonaje) = 0
+	method agrega(personaje) = personaje.agregaArtefacto(self)
 }
 
 class ArmaDelDestino inherits Artefacto{
 	override method precio() = 5*self.peso()
 	method poder() = 3
 	method poder(personaje) = self.poder();
+	
 }
 
 class CollarDivino inherits Artefacto{
@@ -41,18 +44,36 @@ class CotaDeMalla{
 	method peso() = 1
 	
 }
+
+object bendicion{
+	method precio(armadura) = armadura.poderBase()
+	method poder(personaje) =  personaje.nivelHechiceria();
+	method peso() = 0
+}
+
+object ninguno{
+	method poder(personaje) =  0
+	method precio(armadura) = armadura.precioBase() 
+	method peso() = 0
+	method sosPoderoso() = false
+}
+
 class Armadura inherits Artefacto{
 	var property poderBase = 2
-	var property refuerzo = []
+	var property refuerzo = ninguno
 	var property precioBase = 2
 	override method precio() = refuerzo.precio(self)
 	method poder(personaje) = self.refuerzo().poder(personaje) + poderBase;
 	override method peso() = super()+ self.refuerzo().peso()
 }
 
+
+
 object espejoFantastico{
 	method poder(personaje) = self.ArtefactoMasFuerte(personaje).poder(personaje)
 	method precio() = 90
 	method ArtefactoMasFuerte(personaje) = self.listaConEspejoFiltrado(personaje.artefactos()).max({elemento => elemento.poder(personaje)})
 	method listaConEspejoFiltrado(artefactos) = artefactos.filter({elemento => elemento != self})
+	method agrega(personaje) = personaje.agregaArtefacto(self)
+	method retribucion(personaje) = 0
 }

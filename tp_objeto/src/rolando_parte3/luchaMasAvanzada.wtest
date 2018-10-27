@@ -31,9 +31,9 @@ var armadura
 		assert.equals(rolando.nivelLucha(), 20)
 	}
 
-	test "si rolando tiene bendicion en la armadura, entonces la armadura tiene habilidad de lucha igual a 58" {
+	test "si rolando tiene bendicion en la armadura, entonces la armadura tiene habilidad de lucha igual a 37" {
 		armadura.refuerzo(bendicion)
-		assert.equals(armadura.poder(rolando), 58)
+		assert.equals(armadura.poder(rolando), 37)
 	}
 
 	test "si rolando tiene cota de malla en la armadura, entonces la armadura tiene habilidad de lucha igual a 3" {

@@ -6,6 +6,7 @@ import comercio.*
 class Logos {
 	var property nombre = "";	// con property le puedo cambiar el nombre?	Si, podes :)
 	var property multiplicador = 1
+	var property porcentajeRetribucion = 0.5
  
  	method peso() = 2 - (self.poder()%2)
     method poder() = self.nombre().size() * self.multiplicador();
@@ -13,6 +14,8 @@ class Logos {
 	method precio() = self.poder() 
 	method precio(armadura) = self.poder() + armadura.precioBase()
 	method sosPoderoso() = return self.poder() > 15;
+	method retribucion(unPersonaje) = unPersonaje.hechizoPreferido().precio() * self.porcentajeRetribucion()
+	method agrega(personaje) = personaje.hechizoPreferido(self)
 }
 
 class HechizoComercial inherits Logos{
@@ -21,12 +24,16 @@ class HechizoComercial inherits Logos{
 }
 
 object hechizoBasico {
+	var property porcentajeRetribucion = 0.5
 	method peso() = 0
 	method precio() = self.poder() 
 	method precio(armadura) = self.poder() + armadura.precioBase() 
 	method poder() = 10;
 	method poder(personaje) = self.poder()
 	method sosPoderoso() = false;
+	method retribucion(unPersonaje) = unPersonaje.hechizoPreferido().precio() * porcentajeRetribucion
+	method agrega(personaje) = personaje.hechizoPreferido(self)
+	
 }
 class LibroDeHechizos{  
 	var property hechizos =  [];
@@ -34,10 +41,6 @@ class LibroDeHechizos{
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
     method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
     method sosPoderoso() = true 
-}
-
-object bendicion{
-	method precio(armadura) = armadura.poderBase()
-	method poder(personaje) =  personaje.nivelHechiceria();
-	method peso() = 0
+    method agrega(personaje) = personaje.hechizoPreferido(self)
+    method retribucion(personaje) = 0
 }

@@ -52,9 +52,15 @@ object bendicion{
 }
 
 
+object sinRefuerzos{
+	method poder(personaje) =  0
+	method precio(armadura) = armadura.precioBase() 
+	method peso() = 0
+	method sosPoderoso() = false
+}
 class Armadura inherits Artefacto{
 	var property poderBase = 2
-	var property refuerzo = []
+	var property refuerzo = sinRefuerzos
 	var property precioBase = 2
 	override method precio() = refuerzo.precio(self)
 	method poder(personaje) = self.refuerzo().poder(personaje) + poderBase;

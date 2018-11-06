@@ -82,8 +82,9 @@ class Personaje {
 	
 	method compra(comerciante, objeto) {
 		self.loPuedoComprar(comerciante,objeto)
-		comerciante.vende(self,objeto)
-		objeto.agrega(self)
+		comerciante.vende(objeto)
+		self.paga((0.max(comerciante.precio(objeto))))
+		objeto.agrega()
 	}
 	
 	

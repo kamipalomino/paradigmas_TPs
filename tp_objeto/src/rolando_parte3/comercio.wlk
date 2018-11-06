@@ -5,7 +5,7 @@ import hechiceria.*
 class Comerciante{
 	var property tipoComerciante
 	
-	method precio(personaje,producto) = self.tipoComerciante().comision(producto.precio() - producto.retribucion(personaje))  
+	method precio(producto) = self.tipoComerciante().comision(producto.precio() - producto.retribucion())  
 	method vende(producto) = self.precio(producto)
 	
 	method canjea(personaje,hechizo)= self.precioRetribuido(hechizo,personaje.hechizoPreferido())

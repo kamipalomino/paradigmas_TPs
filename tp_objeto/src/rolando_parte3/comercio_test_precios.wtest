@@ -1,0 +1,26 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+
+
+describe "Precios de objetos"{
+	test "Un hechizo de tipo logo nombrado 'alacachula cachicomula' vale 22 monedas"{
+		const alacachula = new Logos(nombre="alacachula cachicomula")
+		assert.equals(alacachula.precio(),22)
+	}
+	test "El precio de un arma es 0"{
+		assert.equals(new ArmaDelDestino().precio(),0)
+	}
+	
+	test "Un collar con 5 perlas cuesta 10 monedas"{
+		assert.equals(new CollarDivino(cantDePerlas=5).precio(),10)
+	}
+	
+	test "una armadura es sin refuerzo cuesta 2 monedas"{
+		assert.equals(new Armadura().precio(),2)
+	}
+	
+	test "una armadura con cota de poder 5, vale 2.5 monedas"{
+		assert.equals(new Armadura(refuerzo=new CotaDeMalla(poder=5)).precio(),2.5)
+	}
+}

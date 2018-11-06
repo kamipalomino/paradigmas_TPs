@@ -6,7 +6,7 @@ class Comerciante{
 	var property tipoComerciante
 	
 	method precio(personaje,producto) = self.tipoComerciante().comision(producto.precio() - producto.retribucion(personaje))  
-	method vende(personaje, producto) = personaje.paga(0.max(self.precio(personaje,producto)) )
+	method vende(producto) = self.precio(producto)
 	
 	method canjea(personaje,hechizo)= self.precioRetribuido(hechizo,personaje.hechizoPreferido())
 	

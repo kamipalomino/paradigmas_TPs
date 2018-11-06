@@ -66,14 +66,14 @@ class Personaje {
 	method leAlcanza(precio) = self.monedas() > precio
 
 	method loPuedoComprar(comerciante,producto) = {
-		self.excepcionSi(self.leAlcanza(comerciante.precio(producto)),"no podes comprar, man") 
-		self.excepcionSi(self.podesLlevar(producto),"no podes cargar, man") 
+		self.NoPodesComprar(self.leAlcanza(comerciante.precio(producto)),"no te alcanzan las monedas, man") 
+		self.NoPodesComprar(self.podesLlevar(producto),"no podes cargar, man") 
 		}
 		
 
-	method excepcionSi(condicion, descripcion) {
+	method NoPodesComprar(condicion, descripcion) {
 		if (condicion) {
-			throw new NoSePuedeComprarError(descripcion)
+			throw new NoPodesComprar(descripcion)
 		}
 	}
 

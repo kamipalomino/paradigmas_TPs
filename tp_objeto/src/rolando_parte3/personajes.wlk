@@ -1,6 +1,7 @@
 import artefactos.*
 import hechiceria.*
 import comercio.*
+import personajes.*
 
 //fuerza oscura
 object fuerzaOscura {

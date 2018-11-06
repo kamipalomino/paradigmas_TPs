@@ -1,64 +1,13 @@
 import personajes.*
 import artefactos.*
 import hechiceria.*
-describe "test del comercio dentro del juego"{
-	
-			
-	test "el precio de lista de un hechizo de logo cuyo nombre es 'alacachula cachicomula' es 22"{
-		const alacachula = new Logos(nombre="alacachula cachicomula")
-	
-		assert.equals(alacachula.precio(),22)
-	}
-	
-	test "Xenia compra el hechizo por un hechizo básico. le sale gratis"{
-		const xenia = new Personaje(hechizoPreferido = alacachula);
-		const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
-		xenia.compra(mockHnos,hechizoBasico)
-		assert.equals(xenia.monedas(),100)
-	}
-	
-	test "Thor compra el hechizo por el hechizo de logos “alacachula cachicomula”, le quedan 83 monedas"{
-		const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia);
-		thor.compra(mockHnos,alacachula)
-		assert.equals(thor.monedas(),83)
-	}
-	
-	test "thor compra dos veces el mismo hechizo básico"{
-		const thor = new Personaje(hechizoPreferido = hechizoBasico);
-		const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
-		thor.compra(mockHnos,hechizoBasico)
-		thor.compra(mockHnos,hechizoBasico)
-		assert.equals(thor.monedas(),90)
-		
-	}
-	
-	test "Loki comienza con 5 monedas. Quiere comprar el hechizo por el de 'alacachula cachicomula' y no puede"{
-		const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
-		var loki = new Personaje(hechizoPreferido = hechizoBasico, monedas=5);
-		conat hechizoAnterior = loki.hechizoPreferido()
-		loki.compra(mockHnos,alacachula)
-		assert.equals(loki.hechizoPreferido(),hechizoAnterior)
-	}
-	
-	test "precio de un arma es 0"{
-		assert.equals(new ArmaDelDestino().precio(),0)
-	}
-	
-	test "precio de un collar con 5 perlas es 10s"{
-		assert.equals(new CollarDivino(cantDePerlas=5).precio(),10)
-	}
-	
-	test "precio de una armadura es sin refuerzo es 2"{
-		assert.equals(new Armadura().precio(),2)
-	}
-	
-	test "precio de una armadura con cota de poder 5, es 2.5"{
-		assert.equals(new Armadura(refuerzo=new CotaDeMalla(poder=5)).precio(),2.5)
-	}
+import comercio.*
 
+describe "test de comercio, entre Xenia con 100 monedas y mockHnos comerciante de tipo Impuesto a las ganancias"{
+	var xenia = new Personaje(hechizoPreferido = {const alacachula= new Logos(nombre="alacachula cachicomula")})
+	const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
 	
-	test "Xenia compra a mocksHnos una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, le quedan 85.5 monedas"{
-		
+test "Si compra una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, le quedan 85.5 monedas"{
 		xenia.compra(mockHnos,new ArmaDelDestino())
 		xenia.compra(mockHnos,new CollarDivino(cantDePerlas=5))
 		xenia.compra(mockHnos,new Armadura())
@@ -66,8 +15,7 @@ describe "test del comercio dentro del juego"{
 		
 		assert.equals(xenia.monedas(),85.5)
 	}
-	
-	test "Xenia compra a mocksHnos una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, tiene 4 artefactos"{		
+	test "Si compra una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, tiene 4 artefactos"{		
 		xenia.compra(mockHnos, new ArmaDelDestino())
 		xenia.compra(mockHnos, new CollarDivino(cantDePerlas=5))
 		xenia.compra(mockHnos, new Armadura())
@@ -75,58 +23,82 @@ describe "test del comercio dentro del juego"{
 		
 		assert.equals(xenia.cantidadDeArtefactos(),4)
 	}
+	test "Si compra un libro de hechizos que contiene el hechizo de logos de nombre “alacachula cachicomula” y el hechizo básico, le quedan 69 monedas"{
+		const libro = new LibroDeHechizos(hechizos=[alacachula,hechizoBasico])
+		xenia.compra(mockHnos, libro)
+		assert.equals(xenia.monedas(),69)
+	}
+	test "Si compra el hechizo un hechizo básico. le sale gratis"{
+		xenia.compra(mockHnos,hechizoBasico)
+		assert.equals(xenia.monedas(),100)
+	}	
+}
+describe "test de compras de Thor y Loki a mockHnos"{
+	var thor = new Personaje(hechizoPreferido = hechizoBasico)
+	var loki = new Personaje(hechizoPreferido = hechizoBasico, monedas=5)
+	const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)		
 	
+	test "Thor compra el hechizo por el hechizo de logos “alacachula cachicomula”, le quedan 83 monedas"{
+		thor.compra(mockHnos,{const alacachula= new Logos(nombre="alacachula cachicomula")})
+		assert.equals(thor.monedas(),83)
+	}
+	
+	test "thor compra dos veces el mismo hechizo básico"{
+		thor.compra(mockHnos,hechizoBasico)
+		thor.compra(mockHnos,hechizoBasico)
+		assert.equals(thor.monedas(),90)
+	}
+	
+	test "Loki comienza con 5 monedas. Quiere comprar el hechizo por el de 'alacachula cachicomula' y no puede"{
+		const hechizoAnterior = loki.hechizoPreferido()
+		loki.compra(mockHnos,{const alacachula= new Logos(nombre="alacachula cachicomula")})
+		assert.equals(loki.hechizoPreferido(),hechizoAnterior)
+	}
+	
+
 	test "Thor compra una armadura con bendición como refuerzo, y una armadura reforzada con el hechizo alacachula, le quedan 74 monedas"{
 		thor.compra(mockHnos, new Armadura(refuerzo=bendicion))
-		thor.compra(mockHnos, new Armadura(refuerzo=alacachula))
+		thor.compra(mockHnos, new Armadura(refuerzo={const alacachula= new Logos(nombre="alacachula cachicomula")}))
 		
 		assert.equals(thor.monedas(),74)
 	}	
 	
 	test "Loki quiere comprar el espejo, no puede"{
 		loki.compra(mockHnos, espejoFantastico)
-	
 		assert.notThat(loki.tenes(espejoFantastico))
 	}	
 	
-	test "Xenia compra un libro de hechizos que contiene el hechizo de logos de nombre “alacachula cachicomula” y el hechizo básico, le quedan 69 monedas"{
-		
-		const libro = new LibroDeHechizos(hechizos=[alacachula,hechizoBasico])
-		xenia.compra(mockHnos, libro)
-		assert.equals(xenia.monedas(),69)
-
-	}
+}
+describe"test de compras, Ursulas con 100 monedas"{
+	var ursula = new Personaje(monedas = 100,pesoMaximo=200)
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a Pastoriza, le quedan 89.1"{
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	test "Si compra la máscara oscura a Pastoriza, le quedan 89.1"{
 		var pastoriza = new Comerciante(tipoComerciante = new TipoComercianteIndependiente(porcentajeComision=9))
 		ursula.compra(pastoriza,new MascaraOscura())
 		assert.equals(ursula.monedas(),89.1)	
 	}
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a prieto, le quedan 87.9"{
+	test "Si compra la máscara oscura a prieto, le quedan 87.9"{
 		const prieto = new Comerciante(tipoComerciante = tipoComercianteRegistrado)
 		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
 		ursula.compra(prieto,new MascaraOscura())
 		assert.equals(ursula.monedas(),87.9)	
 	}	
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a fermepin, le quedan 88.25"{
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	test "Si compra la máscara oscura a fermepin, le quedan 88.25"{
 		ursula.compra(fermepin,new MascaraOscura())
 		assert.equals(ursula.monedas(),88.25)	
 	}
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a Pastoriza recategorizada, le quedan 88.2"{
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	test "Si compra la máscara oscura a Pastoriza recategorizada, le quedan 88.2"{
+		var pastoriza = new Comerciante(tipoComerciante = new TipoComercianteIndependiente(porcentajeComision=9))
 		pastoriza = new Comerciante(tipoComerciante = new TipoComercianteIndependiente(porcentajeComision=9))
 		pastoriza.recategorizate()
 		ursula.compra(pastoriza,new MascaraOscura())
 		assert.equals(ursula.monedas(),88.2)	
 	}
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a Pastoriza recategorizada 2 veces, le quedan 87.9"{
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	test "Si compra la máscara oscura a Pastoriza recategorizada 2 veces, le quedan 87.9"{
 		var pastoriza = new Comerciante(tipoComerciante = new TipoComercianteIndependiente(porcentajeComision=9))
 		pastoriza.recategorizate()
 		pastoriza.recategorizate()
@@ -134,20 +106,39 @@ describe "test del comercio dentro del juego"{
 		assert.equals(ursula.monedas(),87.9)	
 	}
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a prieto recategorizada, le quedan 88.25"{
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	test "Si compra la máscara oscura a prieto recategorizada, le quedan 88.25"{
 		var prieto = new Comerciante(tipoComerciante = tipoComercianteRegistrado)
 		prieto.recategorizate()
 		ursula.compra(prieto,new MascaraOscura())
 		assert.equals(ursula.monedas(),88.25)	
 	}
 	
-	test "Ursula comienza con 100 monedas. Luego compra la máscara oscura a fermenpin recategorizada, le quedan 88.25"{
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	test "Si compra la máscara oscura a fermenpin recategorizado, le quedan 88.25"{
 		var fermepin = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
 		fermepin.recategorizate()
 		ursula.compra(fermepin,new MascaraOscura())
 		assert.equals(ursula.monedas(),88.25)	
 	}
 	
+}
+describe "Precios de objetos"{
+	test "Un hechizo de tipo logo nombrado 'alacachula cachicomula' vale 22 monedas"{
+		const alacachula = new Logos(nombre="alacachula cachicomula")
+		assert.equals(alacachula.precio(),22)
+	}
+	test "El precio de un arma es 0"{
+		assert.equals(new ArmaDelDestino().precio(),0)
+	}
+	
+	test "Un collar con 5 perlas cuesta 10 monedas"{
+		assert.equals(new CollarDivino(cantDePerlas=5).precio(),10)
+	}
+	
+	test "una armadura es sin refuerzo cuesta 2 monedas"{
+		assert.equals(new Armadura().precio(),2)
+	}
+	
+	test "una armadura con cota de poder 5, vale 2.5 monedas"{
+		assert.equals(new Armadura(refuerzo=new CotaDeMalla(poder=5)).precio(),2.5)
+	}
 }

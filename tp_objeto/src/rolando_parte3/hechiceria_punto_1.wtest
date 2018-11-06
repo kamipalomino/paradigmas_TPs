@@ -19,8 +19,8 @@ test "el hechizo 'espectro maléfico' es poderoso "{
 	}
 	
 	
-test "el hechizoComercial no es poderoso "{
-	assert.notThat(hechizoComercial.sosPoderoso())
+test "el hechizoComercial es poderoso "{
+	assert.that(hechizoComercial.sosPoderoso())
 }
 	
 }

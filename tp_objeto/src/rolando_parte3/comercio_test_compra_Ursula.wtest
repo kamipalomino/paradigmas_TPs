@@ -1,5 +1,12 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
+
+
 describe"test de compras, Ursulas con 100 monedas"{
 	var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+	var fermepin = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
 	
 	test "Si compra la máscara oscura a Pastoriza, le quedan 89.1"{
 		var pastoriza = new Comerciante(tipoComerciante = new TipoComercianteIndependiente(porcentajeComision=9))
@@ -8,8 +15,7 @@ describe"test de compras, Ursulas con 100 monedas"{
 	}
 	
 	test "Si compra la máscara oscura a prieto, le quedan 87.9"{
-		const prieto = new Comerciante(tipoComerciante = tipoComercianteRegistrado)
-		var ursula = new Personaje(monedas = 100,pesoMaximo=200)
+		const prieto = new Comerciante(tipoComerciante = tipoComercianteRegistrado)	
 		ursula.compra(prieto,new MascaraOscura())
 		assert.equals(ursula.monedas(),87.9)	
 	}	
@@ -42,8 +48,7 @@ describe"test de compras, Ursulas con 100 monedas"{
 		assert.equals(ursula.monedas(),88.25)	
 	}
 	
-	test "Si compra la máscara oscura a fermenpin recategorizado, le quedan 88.25"{
-		var fermepin = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
+	test "Si compra la máscara oscura a fermenpin recategorizado, le quedan 88.25"{		
 		fermepin.recategorizate()
 		ursula.compra(fermepin,new MascaraOscura())
 		assert.equals(ursula.monedas(),88.25)	

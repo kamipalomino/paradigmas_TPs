@@ -19,21 +19,18 @@ object luna {
 class Personaje {
 
 	var property nivelHechiceriaBase = 3
-	;
+	
 	var property nivelLuchaBase = 1
-	;
+	
 	var property monedas = 100
-	;
+
 	const property pesoMaximo = 200
 	var property hechizoPreferido = hechizoBasico
-	;
+	
 	const property artefactos = []
-
-	;
-
+	
 	method nivelHechiceria() = (self.nivelHechiceriaBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder()
 
-	;
 	method sosPoderoso() = hechizoPreferido.sosPoderoso(self)
 
 	method agregaArtefacto(artefacto) {
@@ -67,24 +64,24 @@ class Personaje {
 	method leAlcanza(precio) = self.monedas() > precio
 
 	method loPuedoComprar(comerciante,producto) = {
-		self.NoPodesComprar(self.leAlcanza(comerciante.precio(producto)),"no te alcanzan las monedas, man") 
+		self.NoPodesComprar(self.leAlcanza(comerciante.precio(self ,producto)),"no te alcanzan las monedas, man") 
 		self.NoPodesComprar(self.podesLlevar(producto),"no podes cargar, man") 
 		}
 		
 
 	method NoPodesComprar(condicion, descripcion) {
 		if (condicion) {
-			throw new NoPodesComprar(descripcion)
+			throw new NoSePuedeComprarError(descripcion)
 		}
 	}
 
 	method paga(precio) = self.monedas(self.monedas() - precio)
 	
-	method compra(comerciante, objeto) {
+	method compra( comerciante, objeto) {
 		self.loPuedoComprar(comerciante,objeto)
-		comerciante.vende(objeto)
-		self.paga((0.max(comerciante.precio(objeto))))
-		objeto.agrega()
+		comerciante.vende(self,objeto)
+		self.paga((0.max(comerciante.precio(self,objeto))))
+		objeto.agrega(self)
 	}
 	
 	

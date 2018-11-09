@@ -4,7 +4,8 @@ import hechiceria.*
 import comercio.*
 
 describe "test de comercio, entre Xenia con 100 monedas y mockHnos comerciante de tipo Impuesto a las ganancias"{
-	var xenia = new Personaje(hechizoPreferido = {const alacachula= new Logos(nombre="alacachula cachicomula")})
+	const alacachula= new Logos(nombre="alacachula cachicomula")
+	var xenia = new Personaje(hechizoPreferido = alacachula)
 	const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
 	
 test "Si compra una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, le quedan 85.5 monedas"{

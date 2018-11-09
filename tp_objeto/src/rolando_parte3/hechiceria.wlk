@@ -3,8 +3,18 @@ import artefactos.*
 import hechiceria.*
 import comercio.*
 
-class Logos {
-	var property nombre = "";	// con property le puedo cambiar el nombre?	Si, podes :)
+
+class Hechizos{
+	var property porcentajeRetribucion = 0.5
+	
+	
+	
+	
+}
+
+
+class Logos  {
+	var property nombre ;	// con property le puedo cambiar el nombre?	Si, podes :)
 	var property multiplicador = 1
 	var property porcentajeRetribucion = 0.5
  
@@ -23,7 +33,7 @@ class HechizoComercial inherits Logos{
 	override method poder() = self.nombre().size() * (self.porcentaje()/100) * self.multiplicador() 
 }
 
-object hechizoBasico {
+object hechizoBasico   {
 	var property porcentajeRetribucion = 0.5
 	method peso() = 0
 	method precio() = self.poder() 
@@ -35,7 +45,7 @@ object hechizoBasico {
 	method agrega(personaje) = personaje.hechizoPreferido(self)
 	
 }
-class LibroDeHechizos{  
+class LibroDeHechizos  {  
 	var property hechizos =  [];
 	method precio() = 10*self.hechizos().size() + self.poder()
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)

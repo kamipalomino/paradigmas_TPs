@@ -1,14 +1,16 @@
 import personajes.*
 import artefactos.*
 import hechiceria.*
+import comercio.*
 
 describe "test de compras de Thor y Loki a mockHnos"{
 	var thor = new Personaje(hechizoPreferido = hechizoBasico)
 	var loki = new Personaje(hechizoPreferido = hechizoBasico, monedas=5)
-	const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)		
+	const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)	
+	const alacachula= new Logos(nombre="alacachula cachicomula")	
 	
 	test "Thor compra el hechizo por el hechizo de logos “alacachula cachicomula”, le quedan 83 monedas"{
-		thor.compra(mockHnos,{const alacachula= new Logos(nombre="alacachula cachicomula")})
+		thor.compra(mockHnos,alacachula)
 		assert.equals(thor.monedas(),83)
 	}
 	
@@ -20,14 +22,14 @@ describe "test de compras de Thor y Loki a mockHnos"{
 	
 	test "Loki comienza con 5 monedas. Quiere comprar el hechizo por el de 'alacachula cachicomula' y no puede"{
 		const hechizoAnterior = loki.hechizoPreferido()
-		loki.compra(mockHnos,{const alacachula= new Logos(nombre="alacachula cachicomula")})
+		loki.compra(mockHnos,alacachula)
 		assert.equals(loki.hechizoPreferido(),hechizoAnterior)
 	}
 	
 
 	test "Thor compra una armadura con bendición como refuerzo, y una armadura reforzada con el hechizo alacachula, le quedan 74 monedas"{
 		thor.compra(mockHnos, new Armadura(refuerzo=bendicion))
-		thor.compra(mockHnos, new Armadura(refuerzo={const alacachula= new Logos(nombre="alacachula cachicomula")}))
+		thor.compra(mockHnos, new Armadura(refuerzo=alacachula))
 		
 		assert.equals(thor.monedas(),74)
 	}	

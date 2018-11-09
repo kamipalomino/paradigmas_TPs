@@ -1,4 +1,9 @@
 
+import artefactos.*
+import hechiceria.*
+import comercio.*
+
+
 //Artefactos
 
 class Artefacto{

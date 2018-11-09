@@ -62,7 +62,7 @@ class Armadura inherits Artefacto{
 	var property poderBase = 2
 	var property refuerzo = sinRefuerzos
 	var property precioBase = 2
-	override method precio() = refuerzo.precio(self)
+	override method precio() = self.refuerzo().precio(self)
 	method poder(personaje) = self.refuerzo().poder(personaje) + poderBase;
 	override method peso() = super()+ self.refuerzo().peso()
 }

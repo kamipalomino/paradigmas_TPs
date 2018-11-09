@@ -6,9 +6,11 @@ import artefactos.*
 
 describe "test de hechiceria recargada de rolando"{
  
-test "si Rolando no se modifica, tiene 56 de nivel de hechicería " {
-	const rolando = new Personaje()
-	rolando.hechizoPreferido(new Logos(nombre="espectro malefico"))
+ const rolando = new Personaje()
+ rolando.hechizoPreferido(new Logos(nombre="espectro malefico"))
+ 
+test "si Rolando no se modifica, tiene 56 de nivel de hechicería " {	
+	
 	assert.equals(rolando.nivelHechiceria(), 56)
 }
 
@@ -19,8 +21,7 @@ test "si furibunda no se modifica, tiene 29 de nivel de hechicería " {
 }
 
 test "si el nombre del espectro maléfico cambia a 'espectro superrecontramalefico muajajaja', 
-	Rolando tiene 125 de nivel de hechicería "{
-		const rolando = new Personaje()
+	Rolando tiene 125 de nivel de hechicería "{	
 		rolando.hechizoPreferido().nombre("espectro superrecontramalefico muajajaja")
 		assert.equals(rolando.nivelHechiceria(), 125)
 	} 

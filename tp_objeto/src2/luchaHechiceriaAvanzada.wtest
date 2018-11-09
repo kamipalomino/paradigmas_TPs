@@ -55,9 +55,9 @@ describe "test de lucha y hechiceria avanzada de rolando" {
 
 	test "Se le agrega a Rolando una armadura extra, cuyo valor base es 5, con un refuerzo cota de malla que tiene un valor de lucha 6.
 Saber cuál es la habilidad para la lucha de Rolando." {
-		rolando.agregaArtefactos([ espadaDelDestino, collarDivino, mascaraOscura, armadura, espejoFantastico ])
-		Armadura armaduraExtra.poder() = 5
-		armaduraExtra.refuerzo(cotaDeMalla)
+		rolando.agregaArtefactos([ espadaDelDestino, collarDivino, mascaraOscura, armadura, espejoFantastico ])	
+		armadura.refuerzo(cotaDeMalla)
+		rolando.nivelLucha()
 	}
 
 }

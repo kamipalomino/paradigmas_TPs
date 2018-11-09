@@ -72,8 +72,7 @@ class Armadura inherits Artefacto{
 object espejoFantastico{
 	method poder(personaje) = self.ArtefactoMasFuerte(personaje).poder(personaje)
 	method precio() = 90
-	method ArtefactoMasFuerte(personaje) = self.listaConEspejoFiltrado(personaje.artefactos()).max({elemento => elemento.poder(personaje)})
-	method listaConEspejoFiltrado(artefactos) = artefactos.filter({elemento => elemento != self})
+	method ArtefactoMasFuerte(personaje) = self.artefactos().max({elemento != self =>  elemento.poder(personaje)})
 	method agrega(personaje) = personaje.agregaArtefacto(self)
 	method retribucion(personaje) = 0
 }

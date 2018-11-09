@@ -177,8 +177,6 @@ object ninguno {
 class LibroDeHechizos {
 
 	method precio() = feriaHechiceria.libroDeHechizosPrecio(self)
-
-	;
 	var property hechizos =  [ninguno];
 	method hechizos(nuevosHechizos) = self.hechizos().addAll(nuevosHechizos)
     method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
@@ -222,7 +220,7 @@ object feriaHechiceria {
 			return armaduraConHechizoPrecio
 			(armadura)
 		;
-		} else { return armaduraSinRefuerzoPrecio(); }
+		} else { return armaduraSinRefuerzoPrecio() }
 	}
 
 	method espejoFantasticoPrecio() = 90

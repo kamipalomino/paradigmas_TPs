@@ -1,0 +1,61 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
+import artefactos.*
+
+describe "test de hechiceria recargada de rolando"{
+ 
+ const rolando = new Personaje()
+ rolando.hechizoPreferido(new Logos(nombre="espectro malefico"))
+ 
+test "si Rolando no se modifica, tiene 56 de nivel de hechicería " {	
+	
+	assert.equals(rolando.nivelHechiceria(), 56)
+}
+
+test "si furibunda no se modifica, tiene 29 de nivel de hechicería " {
+	const hechizoComercial = new HechizoComercial(nombre="el hechizo comercial", multiplicador = 2)
+	const furibunda = new Personaje(hechizoPreferido=hechizoComercial)
+	assert.equals(furibunda.nivelHechiceria(), 29)
+}
+
+test "si el nombre del espectro maléfico cambia a 'espectro superrecontramalefico muajajaja', 
+	Rolando tiene 125 de nivel de hechicería "{	
+		rolando.hechizoPreferido().nombre("espectro superrecontramalefico muajajaja")
+		assert.equals(rolando.nivelHechiceria(), 125)
+	} 
+	
+test "si el hechizo preferido de Rolando es el Hechizo basico, tiene 35 de nivel de hechicería "{
+		const rolando = new Personaje()
+		rolando.hechizoPreferido(hechizoBasico)
+		assert.equals(rolando.nivelHechiceria(), 35)
+	}
+	
+test "si ocurre un eclipse, rolando tiene 61 de nivel de hechicería"{
+		const rolando = new Personaje()
+		luna.eclipsate()
+		assert.equals(rolando.nivelHechiceria(), 61)
+	}
+	
+test "es poderoso el espectro maléfico "{
+		const rolando = new Personaje()
+		assert.that(rolando.hechizoPreferido().sosPoderoso())
+	}
+	
+test "si cambia el nombre del espectro malefico a 'pepe', entonces no es poderoso"{
+		const rolando = new Personaje()
+		rolando.hechizoPreferido().nombre("pepe")
+		assert.notThat(rolando.hechizoPreferido().sosPoderoso())
+	}
+	
+test "es poderoso el hechizo basico "{
+		assert.notThat(hechizoBasico.sosPoderoso())
+	}
+	
+test "es poderoso el hechizo comercial "{
+	const hechizoComercial = new HechizoComercial(nombre="el hechizo comercial", multiplicador = 2)
+	assert.notThat(hechizoComercial.sosPoderoso())
+}
+	
+}

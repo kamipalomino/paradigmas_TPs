@@ -1,0 +1,87 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
+
+
+describe "test Pesos de los artefactos"{
+	
+	test "el peso de la espada vieja es 6 kilos"{	
+		const espadaVieja = new ArmaDelDestino(fechaDeCompra = new Date(7,5,2006),peso=7 )
+		assert.equals(espadaVieja.peso(),6)
+	}
+	
+	test "el peso de la espada nueva es 4 kilos"{	
+		const espadaNueva = new ArmaDelDestino(fechaDeCompra = new Date(),peso=4 )
+		assert.equals(espadaNueva.peso(),4)
+	}
+	
+	test "el peso de la espada comun es 4.95 kilos"{
+		const espadaComun = new ArmaDelDestino(fechaDeCompra = new Date().plusDays(-50),peso=5 )
+		assert.equals(espadaComun.peso(),4.95)
+	}
+	
+	test "el peso del collar de divino es 2.5 kilos"{
+		assert.equals(new CollarDivino().peso(),2.5)
+	}
+	
+	test "el peso de la mascara oscura es 3 kilos"{
+		const mascaraOscura = new MascaraOscura(peso=3,indiceOscuridad=1,minimoPoder=1)
+		assert.equals(mascaraOscura.peso(),3)
+	}
+	
+	test "el peso de la mascara oscura con eclipse es de 5 kilos"{
+		const mascaraOscura = new MascaraOscura(peso=3,indiceOscuridad=1,minimoPoder=1)
+		luna.eclipsate()
+		assert.equals(mascaraOscura.peso(),5)
+	}
+
+	test "el peso de la mascara clara es 2 kilos"{
+		const mascaraClara = new MascaraOscura(indiceOscuridad=0, peso=2,minimoPoder=0)
+		assert.equals(mascaraClara.peso(),2)
+	}	
+	
+	test "el peso de la armadura hechizo par es 14 kilos"{
+		const armaduraHechizoPar = new Armadura(refuerzo=new HechizoComercial(nombre="el hechizo comercial"), peso=12)
+		assert.equals(armaduraHechizoPar.peso(),14)
+	}
+	
+	test "el peso de la armadura hechizo impar es 13 kilos"{
+		const armaduraHechizoImpar = new Armadura(refuerzo=new Logos(nombre="espectroMaleficoque"), peso=12)
+		assert.equals(armaduraHechizoImpar.peso(),13)
+	}
+	
+	test "el peso de la armadura sin refuerzo es 12 kilos"{
+		const armaduraSinRefuerzo = new Armadura()
+		assert.equals(armaduraSinRefuerzo.peso(),12)
+	}
+	test "Ursula carga con 14 kilos iniciales, se desprende de armadura con cota de malla, cual es el peso ahora"{
+		const mascaraOscura = new MascaraOscura()
+		const armaduraConCota = new Armadura()
+		const ursula = new Personaje(monedas = 100,pesoMaximo=200,artefactos=[mascaraOscura,armaduraConCota])
+		ursula.removeArtefacto(armaduraConCota)
+		assert.equals(ursula.cuantoPesoTenes(),3)
+	}
+	
+	test "Merlin le quiere comprar a Mock Hnos. la armadura con hechizo par., y no puede"{
+		const armaduraHechizoPar = new Armadura()
+		const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
+		const merlin = new Personaje(monedas=100,pesoMaximo=10)
+		merlin.compra(mockHnos,armaduraHechizoPar)
+		assert.equals(merlin.tenes(armaduraHechizoPar))
+	}
+	
+	test "Merlin le compra a Mock Hnos. la máscara clara y la oscura, el peso de merlin es 5"{
+		const mascaraOscura = new MascaraOscura()
+		const mascaraClara = new MascaraOscura()
+		const merlin = new Personaje(monedas=100,pesoMaximo=10)
+		const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
+		merlin.compra(mockHnos,mascaraOscura)
+		merlin.compra( mockHnos,mascaraClara)
+		assert.equals(merlin.cuantoPesoTenes(),5)
+	}
+	
+	
+	
+	
+}

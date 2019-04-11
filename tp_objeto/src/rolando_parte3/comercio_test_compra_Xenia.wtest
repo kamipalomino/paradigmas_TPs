@@ -1,0 +1,36 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
+
+describe "test de comercio, entre Xenia con 100 monedas y mockHnos comerciante de tipo Impuesto a las ganancias"{
+	const alacachula= new Logos(nombre="alacachula cachicomula")
+	var xenia = new Personaje(hechizoPreferido = alacachula)
+	const mockHnos = new Comerciante(tipoComerciante = tipoComercianteImpuestoGanancia)
+	
+test "Si compra una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, le quedan 85.5 monedas"{
+		xenia.compra(mockHnos,new ArmaDelDestino())
+		xenia.compra(mockHnos,new CollarDivino(cantDePerlas=5))
+		xenia.compra(mockHnos,new Armadura())
+		xenia.compra(mockHnos,new Armadura(refuerzo=new CotaDeMalla(poder=5)))
+		
+		assert.equals(xenia.monedas(),85.5)
+	}
+	test "Si compra una espada, un collar divino (de 5 perlas), una armadura sin refuerzo y otra armadura con malla de cota cuyo valor de lucha es 5, tiene 4 artefactos"{		
+		xenia.compra(mockHnos, new ArmaDelDestino())
+		xenia.compra(mockHnos, new CollarDivino(cantDePerlas=5))
+		xenia.compra(mockHnos, new Armadura())
+		xenia.compra(mockHnos, new Armadura(refuerzo=new CotaDeMalla(poder=5)))
+		
+		assert.equals(xenia.cantidadDeArtefactos(),4)
+	}
+	test "Si compra un libro de hechizos que contiene el hechizo de logos de nombre “alacachula cachicomula” y el hechizo básico, le quedan 69 monedas"{
+		const libro = new LibroDeHechizos(hechizos=[alacachula,hechizoBasico])
+		xenia.compra(mockHnos, libro)
+		assert.equals(xenia.monedas(),69)
+	}
+	test "Si compra el hechizo un hechizo básico. le sale gratis"{
+		xenia.compra(mockHnos,hechizoBasico)
+		assert.equals(xenia.monedas(),100)
+	}	
+}

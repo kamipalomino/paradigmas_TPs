@@ -1,0 +1,45 @@
+import rolando.*
+
+describe "test de hechiceria de rolando"{
+
+fixture{
+	rolando.hechizoPreferido(espectroMalefico)
+ 
+}
+ 
+test "si Rolando no se modifica, tiene 56 de nivel de hechicería " {
+
+	assert.equals(rolando.nivelHechiceria(), 56)
+}
+
+test "si el nombre del espectro maléfico cambia a 'espectro superrecontramalefico muajajaja', 
+	Rolando tiene 125 de nivel de hechicería "{
+		
+		espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
+		assert.equals(rolando.nivelHechiceria(), 125)
+	} 
+	
+test "si el hechizo preferido de Rolando es el Hechizo basico, tiene 35 de nivel de hechicería "{
+		
+		rolando.hechizoPreferido(hechizoBasico)
+		assert.equals(rolando.nivelHechiceria(), 35)
+	}
+	
+test "si ocurre un eclipse, rolando tiene 61 de nivel de hechicería"{
+		
+		luna.eclipsate()
+		assert.equals(rolando.nivelHechiceria(), 61)
+	}
+	
+test "es poderoso el espectro maléfico "{
+		
+		assert.that(espectroMalefico.sosPoderoso())
+	}
+	
+test "si cambia el nombre del espectro malefico a 'pepe', entonces no es poderoso"{
+		
+		espectroMalefico.nombre("pepe")
+		assert.notThat(espectroMalefico.sosPoderoso())
+	}
+	
+}

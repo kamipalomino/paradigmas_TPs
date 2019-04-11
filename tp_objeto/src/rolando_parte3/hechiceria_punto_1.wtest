@@ -1,0 +1,26 @@
+import personajes.*
+import artefactos.*
+import hechiceria.*
+import comercio.*
+import artefactos.*
+
+describe "test del poder de los hechizos"{
+
+const hechizoComercial=new HechizoComercial(nombre="el hechizo comercial", multiplicador = 2)
+	
+test "el nivel de hechiceria de furibunda debe ser 29 " {
+    const furibunda = new Personaje(hechizoPreferido= hechizoComercial)
+	assert.equals(furibunda.nivelHechiceria(), 29)
+}
+
+test "el hechizo 'espectro maléfico' es poderoso "{
+		const espectroMalefico = new Logos(nombre="espectro maléfico")
+		assert.that(espectroMalefico.sosPoderoso())
+	}
+	
+	
+test "el hechizoComercial es poderoso "{
+	assert.that(hechizoComercial.sosPoderoso())
+}
+	
+}
